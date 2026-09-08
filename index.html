@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoltWorks Power</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070b13; --surface:#0e1524; --surface2:#141d33; --bg-input:#090e18;
+  --border:#22304d; --text:#e8edf7; --muted:#8b96b3; --faint:#5b6685;
+  --accent:#00e5ff; --accent2:#7c5cfc; --amber:#FFB300; --display:'Sora','Space Grotesk','Inter',system-ui,sans-serif; --accent-dim:rgba(0,229,255,.08); --amber-dim:rgba(255,179,0,.08);
+  --success:#22c55e; --warn:#eab308; --danger:#ef4444;
+  --radius:8px; --r-sm:6px;
+  --shadow:0 12px 40px rgba(0,0,0,.5);
+  --glow:0 0 0 3px rgba(0,229,255,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(ellipse 60% 40% at 20% -5%,rgba(0,229,255,.10),transparent),
+  radial-gradient(ellipse 50% 40% at 85% 100%,rgba(124,92,252,.10),transparent),
+  linear-gradient(rgba(0,229,255,.025) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(0,229,255,.025) 1px,transparent 1px);
+  background-size:auto,auto,56px 56px,56px 56px;pointer-events:none;z-index:0}
+.app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+/* header */
+header{position:sticky;top:0;z-index:200;background:rgba(10,15,27,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 26px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:11px;font-family:var(--display);font-weight:800;font-size:16px;letter-spacing:-.2px}
+.logo-icon{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,var(--amber),var(--accent));display:flex;align-items:center;justify-content:center;font-size:18px;color:#201500;font-weight:800;box-shadow:0 4px 18px rgba(255,179,0,.35)}
+.logo small{display:block;font-size:10px;font-weight:500;color:var(--muted);letter-spacing:.4px}
+nav{display:flex;gap:4px;background:rgba(5,8,15,.7);padding:4px;border-radius:12px;border:1px solid var(--border);flex-wrap:wrap}
+.nav-btn{padding:8px 16px;border:none;background:transparent;color:var(--muted);font-size:12.5px;font-weight:700;letter-spacing:.2px;cursor:pointer;border-radius:8px;transition:all .18s;font-family:var(--display)}
+.nav-btn:hover{color:var(--text)}
+.nav-btn.active{background:linear-gradient(135deg,var(--accent),#00b8d4);color:#04121a}
+.status-pill{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--success);background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);padding:7px 14px;border-radius:20px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 8px var(--success);animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.5}}
+/* hero */
+.hero{max-width:1060px;margin:0 auto;padding:52px 24px 26px;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:var(--amber-dim);border:1px solid rgba(255,179,0,.3);border-radius:50px;font-size:11.5px;font-weight:600;color:var(--amber);letter-spacing:.3px;margin-bottom:18px}
+.hero h1{font-family:var(--display);font-size:clamp(34px,5.5vw,54px);font-weight:800;letter-spacing:-1.5px;line-height:1.08}
+.hero h1 span{background:linear-gradient(120deg,var(--amber),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:14.5px;color:var(--muted);margin:14px auto 24px;max-width:620px}
+.hero-stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.hstat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 22px;min-width:130px}
+.hstat b{display:block;font-family:'Inter',system-ui,sans-serif;font-weight:800;font-size:22px;color:var(--amber)}
+.hstat span{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+/* layout */
+main{max-width:1240px;margin:0 auto;width:100%;padding:0 22px 60px}
+section.tool-section{margin-top:44px;scroll-margin-top:90px}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.sec-head h2{font-family:var(--display);font-size:21px;font-weight:800;letter-spacing:-.5px}
+.sec-head .num{font-family:var(--display);font-size:12px;color:var(--amber);background:var(--amber-dim);border:1px solid rgba(255,179,0,.3);padding:2px 10px;border-radius:12px}
+.sec-sub{font-size:13px;color:var(--muted);margin-bottom:20px;max-width:760px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;transition:border-color .2s,transform .2s}
+.card:hover{border-color:rgba(0,229,255,.4)}
+.card.flash{border-color:var(--accent);box-shadow:var(--glow)}
+.card h3{font-size:14.5px;font-weight:700;display:flex;align-items:center;gap:9px;margin-bottom:4px}
+.card h3 .ico{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.i-cyan{background:rgba(0,229,255,.13);color:var(--accent)}
+.i-violet{background:rgba(124,92,252,.15);color:#a78bfa}
+.i-green{background:rgba(34,197,94,.13);color:var(--success)}
+.i-amber{background:rgba(234,179,8,.13);color:var(--warn)}
+.i-red{background:rgba(239,68,68,.13);color:var(--danger)}
+.i-blue{background:rgba(91,141,239,.15);color:#5b8def}
+.card .desc{font-size:12px;color:var(--muted);margin-bottom:14px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.frow.single{grid-template-columns:1fr}
+.fg label{font-size:11px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
+.fg input,.fg select{width:100%;padding:9px 11px;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:13px;transition:border-color .15s}
+.fg input:focus,.fg select:focus{outline:none;border-color:var(--accent);box-shadow:var(--glow)}
+.fg select{font-family:'Inter',sans-serif}
+.btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--accent),#00b8d4);color:#04121a;border:none;border-radius:10px;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;transition:transform .15s,opacity .15s;margin-top:4px}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn.ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn-row{display:flex;gap:10px}.btn-row .btn{margin-top:10px}
+.results{display:none;margin-top:14px}
+.results.show{display:block;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:8px}
+.rcard{background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r-sm);padding:11px 8px;text-align:center}
+.rv{font-size:17px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.rv.pass{color:var(--success)}.rv.fail{color:var(--danger)}.rv.warn{color:var(--warn)}.rv.info{color:var(--accent)}
+.rl{font-size:9.5px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+.verdict{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:var(--r-sm);font-size:12.5px;font-weight:600;margin-top:10px;border:1px solid}
+.v-ok{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.3);color:var(--success)}
+.v-warn{background:rgba(234,179,8,.08);border-color:rgba(234,179,8,.3);color:var(--warn)}
+.v-fail{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3);color:var(--danger)}
+.issues{margin-top:8px;font-size:12px}
+.issue{display:flex;gap:8px;align-items:flex-start;padding:8px 11px;margin-top:6px;border-radius:8px;font-weight:500}
+/* tables */
+.tbl-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:16px}
+.tbl-wrap h4{padding:14px 18px 10px;font-size:13px;font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:8px 12px;text-align:right;border-bottom:1px solid var(--border);font-family:'Inter',system-ui,sans-serif;white-space:nowrap}
+th{background:rgba(0,229,255,.04);font-weight:600;color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;font-family:'Inter',sans-serif}
+td:first-child,th:first-child{text-align:left}
+tr:last-child td{border-bottom:none}
+.pill{display:inline-block;padding:2px 10px;border-radius:12px;font-size:10.5px;font-weight:700;font-family:'Inter',sans-serif}
+.p-ok{background:rgba(34,197,94,.12);color:var(--success)}
+.p-warn{background:rgba(234,179,8,.12);color:var(--warn)}
+.p-fail{background:rgba(239,68,68,.12);color:var(--danger)}
+.p-info{background:rgba(0,229,255,.12);color:var(--accent)}
+/* SLD */
+.sld-layout{display:grid;grid-template-columns:220px 1fr;gap:16px}
+@media(max-width:820px){.sld-layout{grid-template-columns:1fr}}
+.palette{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:8px}
+.palette h4{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.pal-btn{display:flex;align-items:center;gap:9px;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .15s}
+.pal-btn:hover{border-color:var(--accent)}
+#sldCanvas{width:100%;height:420px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius);cursor:crosshair;touch-action:none}
+/* report */
+.report-out{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;display:none;margin-top:16px}
+.report-out.show{display:block}
+.report-out h2{font-size:19px;margin-bottom:2px}
+.report-out .meta{font-size:12px;color:var(--muted);margin-bottom:16px}
+.report-out h4{font-size:13px;margin:16px 0 8px;color:var(--accent)}
+.report-out p,.report-out li{font-size:12.5px;color:#c4cbdf}
+.report-out ul{padding-left:20px}
+/* live study + SLD */
+#liveCanvas{width:100%;height:230px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--r-sm)}
+input[type=range]{-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;background:var(--surface2);border:1px solid var(--border);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#00b8d4);cursor:pointer;box-shadow:0 0 0 4px rgba(0,229,255,.12)}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;border:none}
+[data-theme="light"]{--bg:#f2f5fa;--surface:#ffffff;--surface2:#e9edf5;--bg-input:#eef1f8;--border:#d3dbe8;--text:#131a29;--muted:#55607a;--faint:#8b96b3;--accent:#0099bb;--accent-dim:rgba(0,153,187,.1);--amber-dim:rgba(255,179,0,.16);--shadow:0 12px 32px rgba(20,30,60,.12);--glow:0 0 0 3px rgba(0,153,187,.15)}
+[data-theme="light"] body::before{background:radial-gradient(ellipse 60% 40% at 20% -5%,rgba(0,153,187,.12),transparent),radial-gradient(ellipse 50% 40% at 85% 100%,rgba(255,179,0,.16),transparent),linear-gradient(rgba(0,60,90,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(0,60,90,.07) 1px,transparent 1px)}
+[data-theme="light"] .nav-btn.active{background:linear-gradient(135deg,#00c4e0,#0099bb);color:#fff}
+[data-theme="light"] .btn{background:linear-gradient(135deg,#00b8d9,#0099bb);color:#fff}
+[data-theme="light"] .btn.ghost{background:var(--surface2);color:var(--text)}
+[data-theme="light"] th{background:rgba(0,153,187,.07)}
+[data-theme="light"] .report-out p,[data-theme="light"] .report-out li{color:#3a4763}
+/* toast + footer */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface2);border:1px solid var(--accent);color:var(--text);padding:11px 22px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;transition:all .25s;z-index:500;pointer-events:none}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--border)}
+@media print{header,.hero,.btn-row,.palette,nav,#toast,.no-print{display:none!important}body::before{display:none}body{background:#fff;color:#000}.card,.tbl-wrap,.report-out{border:1px solid #ccc;background:#fff;color:#000}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="logo"><div class="logo-icon">⚡</div><div>VoltWorks Power<small>POWER ENGINEERING SUITE</small></div></div>
+  <nav>
+    <button class="nav-btn active" data-sec="power">Power</button>
+    <button class="nav-btn" data-sec="analysis">Analysis</button>
+    <button class="nav-btn" data-sec="sld">SLD Builder</button>
+    <button class="nav-btn" data-sec="report">Report</button>
+  </nav>
+  <button class="btn ghost" id="themeBtn" onclick="toggleTheme()" title="Toggle light/dark theme" style="width:auto;padding:8px 14px;margin-top:0">🌙</button>
+  <div class="status-pill"><span class="dot"></span><span id="statusText">Ready · client-side</span></div>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">⚡ POWER EDITION — FEEDERS · TRANSFORMERS · FAULT LEVELS · NETWORK ANALYSIS</div>
+  <h1>Design. Check. <span>Energize.</span></h1>
+  <p>Feeder voltage drop, transformer sizing, cable sizing, fault levels, network analysis, single-line diagrams and professional reports — all running instantly in your browser. No server, no uploads.</p>
+  <div class="hero-stats">
+    <div class="hstat"><b>5</b><span>power modules</span></div>
+    <div class="hstat"><b>6</b><span>report tables</span></div>
+    <div class="hstat"><b>100%</b><span>client-side</span></div>
+  </div>
+</div>
+
+<main>
+<!-- ============ POWER ============ -->
+<section class="tool-section" id="sec-power">
+  <div class="sec-head"><span class="num">01</span><h2>Power Systems</h2></div>
+  <p class="sec-sub">Per-unit base, feeder voltage drop, transformer sizing, LV cable sizing and transformer-bus fault level — ported from PowerSys Pro + psextract.</p>
+  <div class="grid">
+    <div class="card" id="card-system">
+      <h3><span class="ico i-cyan">◈</span>System Base</h3>
+      <p class="desc">Per-unit reference shared by fault calculations below.</p>
+      <div class="frow">
+        <div class="fg"><label>Base MVA</label><input type="number" id="baseMva" value="100"></div>
+        <div class="fg"><label>Base kV</label><input type="number" id="baseKv" value="11"></div>
+      </div>
+      <button class="btn ghost" onclick="saveBase()">Set base</button>
+    </div>
+    <div class="card" id="card-line">
+      <h3><span class="ico i-cyan">〜</span>Feeder Voltage Drop</h3>
+      <p class="desc">3-phase feeder drop from R/X per km, length, load and PF.</p>
+      <div class="frow">
+        <div class="fg"><label>Load kW</label><input type="number" id="loadKw" value="500"></div>
+        <div class="fg"><label>Power factor</label><input type="number" id="pf" value="0.85" step="0.01" min="0.1" max="1"></div>
+        <div class="fg"><label>Length (m)</label><input type="number" id="lineLength" value="250"></div>
+        <div class="fg"><label>Load voltage kV</label><input type="number" id="vSecondary" value="0.4" step="0.01"></div>
+        <div class="fg"><label>R Ω/km</label><input type="number" id="lineR" value="0.25" step="0.01"></div>
+        <div class="fg"><label>X Ω/km</label><input type="number" id="lineX" value="0.08" step="0.01"></div>
+      </div>
+      <button class="btn" onclick="calcLine()">Calculate drop</button>
+      <div class="results" id="res-line"><div class="rgrid" id="grid-line"></div><div class="verdict" id="verdict-line"></div></div>
+    </div>
+    <div class="card" id="card-tr">
+      <h3><span class="ico i-violet">▣</span>Transformer Sizing + Fault Level</h3>
+      <p class="desc">Recommended standard size, utilisation and symmetrical/asymmetrical fault current.</p>
+      <div class="frow">
+        <div class="fg"><label>Rating kVA</label><input type="number" id="transformerKva" value="1000"></div>
+        <div class="fg"><label>Impedance %Z</label><input type="number" id="pctZ" value="5" step="0.1"></div>
+        <div class="fg"><label>Primary kV</label><input type="number" id="vPrimary" value="11"></div>
+        <div class="fg"><label>Secondary kV</label><input type="number" id="vSecondary2" value="0.4" step="0.01"></div>
+      </div>
+      <button class="btn" onclick="calcTransformer()">Calculate transformer</button>
+      <div class="results" id="res-tr"><div class="rgrid" id="grid-tr"></div><div class="verdict" id="verdict-tr"></div></div>
+    </div>
+    <div class="card" id="card-cable">
+      <h3><span class="ico i-blue">🔌</span>LV Cable Sizing <span class="pill p-info">IEC 60364</span></h3>
+      <p class="desc">Copper XLPE, derated for installation + ambient, with VD check.</p>
+      <div class="frow">
+        <div class="fg"><label>Load kW</label><input type="number" id="cLoad" value="90"></div>
+        <div class="fg"><label>Voltage V</label><input type="number" id="cVolt" value="400"></div>
+        <div class="fg"><label>PF</label><input type="number" id="cPf" value="0.85" step="0.01"></div>
+        <div class="fg"><label>Length m</label><input type="number" id="cLen" value="60"></div>
+        <div class="fg"><label>Install derate</label><input type="number" id="cInst" value="0.9" step="0.05" min="0.5" max="1"></div>
+        <div class="fg"><label>Ambient derate</label><input type="number" id="cAmb" value="0.94" step="0.01" min="0.5" max="1"></div>
+      </div>
+      <button class="btn" onclick="calcCable()">Size cable</button>
+      <div class="results" id="res-cable"><div class="rgrid" id="grid-cable"></div><div class="verdict" id="verdict-cable"></div></div>
+    </div>
+    <div class="card" id="card-sc">
+      <h3><span class="ico i-red">⚠</span>Short-Circuit at Bus</h3>
+      <p class="desc">Fault current at transformer LV bus including feeder impedance.</p>
+      <div class="frow">
+        <div class="fg"><label>TX kVA</label><input type="number" id="sTx" value="1000"></div>
+        <div class="fg"><label>TX %Z</label><input type="number" id="sZ" value="5" step="0.1"></div>
+        <div class="fg"><label>LV kV</label><input type="number" id="sV" value="0.4" step="0.01"></div>
+        <div class="fg"><label>Feeder Z Ω</label><input type="number" id="sZf" value="0.005" step="0.001"></div>
+      </div>
+      <button class="btn" onclick="calcSC()">Calculate fault</button>
+      <div class="results" id="res-sc"><div class="rgrid" id="grid-sc"></div><div class="verdict" id="verdict-sc"></div></div>
+    </div>
+    <div class="card" id="card-std">
+      <h3><span class="ico i-violet">📏</span>Design Standards</h3>
+      <p class="desc">Switches formulas, limits and references across the calculators.</p>
+      <div class="frow single">
+        <div class="fg"><label>Fault study</label><select id="faultStd" onchange="stdChanged()"><option value="IEC60909">IEC 60909 — short-circuit currents</option><option value="ANSI">ANSI C37 / IEEE 141 — duty</option></select></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Cable / VD</label><select id="cableStd" onchange="stdChanged()"><option value="IEC60364">IEC 60364-5-52</option><option value="IEEE141">IEEE 141 (Red Book)</option></select></div>
+        <div class="fg"><label>Circuit type (IEC)</label><select id="cktType" onchange="stdChanged()"><option value="power">Power (5%)</option><option value="lighting">Lighting (3%)</option></select></div>
+      </div>
+      <div class="frow single">
+        <div class="fg"><label>Transformer</label><select id="txStd" onchange="stdChanged()"><option value="IEC60076">IEC 60076</option><option value="IEEEC57">IEEE C57.12.00</option></select></div>
+      </div>
+      <div class="verdict v-ok" id="stdRef" style="margin-top:10px"></div>
+    </div>
+    <div class="card" id="card-live" style="grid-column:1/-1">
+      <h3><span class="ico i-green">📈</span>Live Load Study <span class="pill p-info">0–150%</span></h3>
+      <p class="desc">Drag the slider — feeder VD, transformer loading and cable VD recalculate live from your inputs above. Same slider drives SLD loading colours.</p>
+      <div class="slider-wrap" style="margin-bottom:12px"><input type="range" id="loadPct" min="0" max="150" value="100" step="1" oninput="liveStudy()" style="flex:1"><span class="slider-val" id="loadPctVal" style="min-width:56px">100%</span></div>
+      <canvas id="liveCanvas" width="640" height="230"></canvas>
+      <div class="rgrid" id="grid-live" style="margin-top:10px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ANALYSIS ============ -->
+<section class="tool-section" id="sec-analysis">
+  <div class="sec-head"><span class="num">02</span><h2>Network Analysis Report</h2></div>
+  <p class="sec-sub">psextract-style system report. Edit bus voltages live — compliance re-evaluates instantly. Sample 5-bus demo case preloaded.</p>
+  <div class="btn-row no-print" style="max-width:420px;margin-bottom:14px">
+    <button class="btn ghost" onclick="recalcAnalysis()">↻ Re-evaluate</button>
+    <button class="btn ghost" onclick="resetAnalysis()">Reset demo data</button>
+  </div>
+  <div class="tbl-wrap"><h4>Bus Results <span style="color:var(--muted);font-weight:400">— click Vm / load cells to edit</span></h4>
+    <table id="tbl-bus"><thead><tr><th>Bus</th><th>Name</th><th>V (kV)</th><th>Vm (p.u.)</th><th>Va (°)</th><th>P (kW)</th><th>Q (kVar)</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+  <div class="tbl-wrap"><h4>Branch Power Flows</h4>
+    <table id="tbl-branch"><thead><tr><th>From</th><th>To</th><th>Pf (kW)</th><th>Qf (kVar)</th><th>Loading %</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+  <div class="tbl-wrap"><h4>Short-Circuit Analysis (Z-bus method, sample)</h4>
+    <table id="tbl-sc2"><thead><tr><th>Bus</th><th>I_sc (kA)</th><th>S_sc (MVA)</th><th>Z_sc (Ω)</th><th>Breaker ≥</th></tr></thead><tbody></tbody></table></div>
+  <div class="tbl-wrap"><h4>NERC Compliance</h4>
+    <table id="tbl-nerc"><thead><tr><th>Check</th><th>Result</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+  <div class="tbl-wrap"><h4>Generator Dispatch</h4>
+    <table id="tbl-gen"><thead><tr><th>Unit</th><th>P (kW)</th><th>Q (kVar)</th><th>Vset (p.u.)</th><th>Profile</th></tr></thead><tbody></tbody></table></div>
+</section>
+
+<!-- ============ SLD ============ -->
+<section class="tool-section" id="sec-sld">
+  <div class="sec-head"><span class="num">03</span><h2>Single-Line Diagram Builder</h2></div>
+  <p class="sec-sub">Place mode: pick a component, then click the canvas. Wire mode: click two symbols to connect them. Operate mode: click a breaker to open/close, click a load or motor to cycle its loading. Drag to move, double-click to delete. Loading colours follow the Live Load Study slider.</p>
+  <div class="sld-layout">
+    <div class="palette no-print">
+      <h4>Components</h4>
+      <button class="pal-btn" data-comp="gen">🌀 Generator</button>
+      <button class="pal-btn" data-comp="tx">▣ Transformer</button>
+      <button class="pal-btn" data-comp="brk">⏚ Breaker</button>
+      <button class="pal-btn" data-comp="bus">━ Busbar</button>
+      <button class="pal-btn" data-comp="motor">Ⓜ Motor</button>
+      <button class="pal-btn" data-comp="load">💡 Load</button>
+      <h4 style="margin-top:8px">Mode</h4>
+      <button class="pal-btn" data-mode="place" onclick="sldSetMode('place')">✏️ Place</button>
+      <button class="pal-btn" data-mode="wire" onclick="sldSetMode('wire')">🔗 Wire</button>
+      <button class="pal-btn" data-mode="operate" onclick="sldSetMode('operate')">⚡ Operate</button>
+      <h4 style="margin-top:8px">Actions</h4>
+      <button class="pal-btn" onclick="exportSLD()">⬇ Export SVG</button>
+      <button class="pal-btn" onclick="clearSLD()">🗑 Clear</button>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px">Mode: <b id="sldMode" style="color:var(--accent)">place</b> · Sel: <b id="sldSel" style="color:var(--accent)">bus</b></div>
+      <div style="font-size:11px;color:var(--muted)" id="sldCount">0 comps · 0 wires</div>
+    </div>
+    <svg id="sldCanvas" viewBox="0 0 800 420"></svg>
+  </div>
+</section>
+
+<!-- ============ REPORT ============ -->
+<section class="tool-section" id="sec-report">
+  <div class="sec-head"><span class="num">04</span><h2>Engineering Report</h2></div>
+  <p class="sec-sub">Collects your latest results from every module above into one professional report. Print or save as PDF.</p>
+  <div class="btn-row" style="max-width:520px">
+    <button class="btn" onclick="buildReport()">📄 Generate report</button>
+    <button class="btn ghost" onclick="window.print()">🖨 Print / PDF</button>
+  </div>
+  <div class="report-out" id="reportOut"></div>
+</section>
+</main>
+<footer>VoltWorks Power · from PowerSys Pro + psextract · all calculations run locally in your browser · <span id="footDate"></span></footer>
+</div>
+<div id="toast"></div>
+<script>
+const SQRT3=Math.sqrt(3), $=id=>document.getElementById(id);
+const R={}; // last results store for report
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2200);}
+function show(res,grid,verdict,cells,verdictHTML){const r=$(res);r.classList.add('show');$(grid).innerHTML=cells.map(c=>`<div class="rcard"><div class="rv ${c.cls||'info'}">${c.v}</div><div class="rl">${c.l}</div></div>`).join('');const v=$(verdict);v.className='verdict '+verdictHTML.cls;v.innerHTML=verdictHTML.html;}
+function flash(id){const el=$(id);el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1600);}
+const gv=id=>parseFloat($(id).value)||0;
+let BASE={mva:100,kv:11};
+const STD={fault:'IEC60909',cable:'IEC60364',tx:'IEC60076',ckt:'power'};
+function stdChanged(){
+  STD.fault=$('faultStd').value;STD.cable=$('cableStd').value;STD.tx=$('txStd').value;STD.ckt=$('cktType').value;
+  $('cktType').disabled=(STD.cable!=='IEC60364');
+  const refs={IEC60909:'Fault: IEC 60909-0 §4 — Ik″ with c=1.10, peak Ip≈2.55·Ik″ (κ=1.8, LV)',
+    ANSI:'Fault: ANSI C37.010 / IEEE 141 — symmetrical Ik″, momentary duty ×1.15',
+    IEC60364:'Cable: IEC 60364-5-52 §525 — VD '+(STD.ckt==='lighting'?'3% lighting':'5% power'),
+    IEEE141:'Cable: IEEE 141 (Red Book) Ch.3 — VD ≤5% recommended',
+    IEC60076:'TX: IEC 60076-5 — typical uk 4–6% for 1000 kVA class',
+    IEEEC57:'TX: IEEE C57.12.00 — typical uk 5.75% for 1000 kVA class'};
+  $('stdRef').innerHTML='📏 '+refs[STD.fault]+'<br>'+refs[STD.cable]+'<br>'+refs[STD.tx];
+  const rerun={'res-line':calcLine,'res-tr':calcTransformer,'res-cable':calcCable,'res-sc':calcSC};
+  Object.keys(rerun).forEach(id=>{const el=$(id);if(el&&el.classList&&el.classList.contains&&el.classList.contains('show'))rerun[id]();});
+}
+function saveBase(){BASE={mva:gv('baseMva')||100,kv:gv('baseKv')||11};toast('✅ Base set: '+BASE.mva+' MVA / '+BASE.kv+' kV');flash('card-system');R.base={...BASE};}
+
+/* ---- Line VD ---- */
+function calcLine(){
+  const loadKw=gv('loadKw'),pf=gv('pf')||1,vSec=gv('vSecondary')||0.4;
+  const km=gv('lineLength')/1000,rT=gv('lineR')*km,xT=gv('lineX')*km;
+  const iLoad=loadKw/(SQRT3*vSec*pf),sin=Math.sqrt(Math.max(0,1-pf*pf));
+  const vDv=iLoad*(rT*pf+xT*sin),vDpct=vDv/(vSec*1000)*100,vLoad=vSec-vDv/1000;
+  R.line={loadKw,pf,len:gv('lineLength'),vDv,vDpct,vLoad,iLoad};
+  const ok=vDpct<=5,warn=vDpct>3;
+  show('res-line','grid-line','verdict-line',[
+    {v:vDpct.toFixed(2)+'%',l:'Volt drop',cls:vDpct<=5?'pass':'fail'},
+    {v:vLoad.toFixed(3),l:'V at load kV',cls:vLoad>=vSec*0.9?'pass':'warn'},
+    {v:iLoad.toFixed(1)+' A',l:'Load current'}],
+    ok?{cls:'v-ok',html:'✅ Within 5% limit'}:{cls:'v-fail',html:`❌ Drop ${vDpct.toFixed(2)}% exceeds 5% — upsize conductor or shorten run`});
+  if(!ok||warn&&!ok){}flash('card-line');toast('✅ Feeder calculated');
+}
+
+/* ---- Transformer ---- */
+const STD_KVA=[15,30,50,100,150,225,300,500,750,1000,1500,2000,2500,3000,5000,7500,10000,15000,20000];
+function calcTransformer(){
+  const kva=gv('transformerKva'),pctZ=gv('pctZ'),vP=gv('vPrimary'),vS=gv('vSecondary2')||0.4;
+  const loadKw=gv('loadKw')||500,pf=gv('pf')||0.85;
+  const actKva=loadKw/pf,req=loadKw/(pf*1.25);
+  let rec=STD_KVA[STD_KVA.length-1];for(const s of STD_KVA){if(s>=req){rec=s;break;}}
+  const sizeStr=rec>=1000?(rec/1000).toFixed(1)+' MVA':rec+' kVA';
+  const util=actKva/kva*100;
+  const scMva=BASE.mva*100/pctZ,scSym=scMva/(SQRT3*BASE.kv),scAsym=scSym*1.5;
+  const ukTyp=STD.tx==='IEC60076'?'uk typ 4–6% (IEC 60076-5)':'uk typ 5.75% (IEEE C57.12.00)';
+  R.tr={kva,pctZ,vP,vS,actKva,rec:sizeStr,util,scSym,scAsym,std:STD.tx,ukTyp};
+  const bad=util>80||scSym>50;
+  show('res-tr','grid-tr','verdict-tr',[
+    {v:sizeStr,l:'Recommended'},
+    {v:util.toFixed(1)+'%',l:'Utilisation',cls:util>80?'fail':util>60?'warn':'pass'},
+    {v:scSym.toFixed(2)+' kA',l:'Isc sym',cls:scSym>50?'fail':'pass'},
+    {v:scAsym.toFixed(2)+' kA',l:'Isc asym'}],
+    bad?{cls:'v-fail',html:'❌ Review overload / fault duty<br><span style="font-weight:400">entered uk '+pctZ+'% · '+ukTyp+'</span>'}:{cls:'v-ok',html:'✅ Size + fault duty OK <span class="pill p-info">'+ukTyp+'</span>'});
+  flash('card-tr');toast('✅ Transformer calculated');
+}
+
+/* ---- Cable ---- */
+const CU=[
+ [1.5,18,12.1],[2.5,24,7.41],[4,32,4.61],[6,42,3.08],[10,57,1.83],[16,76,1.15],
+ [25,101,0.727],[35,125,0.524],[50,151,0.387],[70,192,0.268],[95,232,0.193],
+ [120,269,0.153],[150,309,0.124],[185,353,0.101],[240,415,0.0775],[300,461,0.062]];
+function calcCable(){
+  const P=gv('cLoad')*1000,V=gv('cVolt'),pf=gv('cPf')||0.85,L=gv('cLen');
+  const der=(gv('cInst')||1)*(gv('cAmb')||1);
+  const I=P/(SQRT3*V*pf),Ireq=I/der;
+  let pick=CU[CU.length-1];for(const c of CU){if(c[1]>=Ireq){pick=c;break;}}
+  const vdPct=SQRT3*I*pick[2]*L/1000/V*100;
+  const vdLim=(STD.cable==='IEC60364'&&STD.ckt==='lighting')?3:5;
+  const vdRef=STD.cable==='IEC60364'?'IEC 60364-5-52 §525':'IEEE 141 Ch.3';
+  R.cable={kw:gv('cLoad'),I,mm:pick[0],vdPct,lim:vdLim,std:STD.cable};
+  const cok=vdPct<=vdLim;
+  show('res-cable','grid-cable','verdict-cable',[
+    {v:I.toFixed(1)+' A',l:'Load current'},
+    {v:pick[0]+' mm²',l:'Copper XLPE',cls:'pass'},
+    {v:vdPct.toFixed(2)+'%',l:'VD ≤'+vdLim+'%',cls:cok?'pass':'fail'}],
+    cok?{cls:'v-ok',html:`✅ ${pick[0]} mm² Cu — thermally + VD OK <span class="pill p-info">${vdRef}</span>`}:{cls:'v-fail',html:`❌ VD ${vdPct.toFixed(2)}% > ${vdLim}% <span class="pill p-info">${vdRef}</span> — go up a size`});
+  flash('card-cable');toast('✅ Cable sized');
+}
+
+/* ---- Short circuit ---- */
+function calcSC(){
+  const S=gv('sTx'),Z=gv('sZ'),V=gv('sV')||0.4,Zf=gv('sZf');
+  const Ztr=Z/100*Math.pow(V*1000,2)/(S*1000);
+  const Zt=Ztr+Zf,Ik=(V*1000)/(SQRT3*Zt)/1000;
+  R.sc={S,Z,V,Ik,Zt,std:STD.fault};
+  if(STD.fault==='IEC60909'){
+    const Ikp=Ik*1.1,Ip=2.55*Ikp;R.sc.Ikp=Ikp;R.sc.Ip=Ip;
+    show('res-sc','grid-sc','verdict-sc',[
+      {v:Ikp.toFixed(2)+' kA',l:'Ik″ c=1.1',cls:Ikp<=50?'pass':'fail'},
+      {v:Ip.toFixed(2)+' kA',l:'Ip peak κ=1.8'},
+      {v:Zt.toFixed(4)+' Ω',l:'Z total'}],
+      Ikp<=50?{cls:'v-ok',html:'✅ Within 50 kA gear <span class="pill p-info">IEC 60909-0 §4</span>'}:{cls:'v-fail',html:'❌ Exceeds 50 kA <span class="pill p-info">IEC 60909-0 §4</span> — raise %Z or split bus'});
+  }else{
+    const M=Ik*1.15;R.sc.M=M;
+    show('res-sc','grid-sc','verdict-sc',[
+      {v:Ik.toFixed(2)+' kA',l:'Ik sym',cls:Ik<=50?'pass':'fail'},
+      {v:M.toFixed(2)+' kA',l:'Mom. duty'},
+      {v:Zt.toFixed(4)+' Ω',l:'Z total'}],
+      Ik<=50?{cls:'v-ok',html:'✅ Within 50 kA duty <span class="pill p-info">ANSI C37.010</span>'}:{cls:'v-fail',html:'❌ Exceeds 50 kA duty <span class="pill p-info">ANSI C37.010</span> — raise %Z or split bus'});
+  }
+  flash('card-sc');toast('✅ Fault level calculated');
+}
+
+/* ---- Analysis ---- */
+let BUS=[
+ {n:1,name:'Slack 132kV',v:132,vm:1.0,va:0,p:0,q:0},
+ {n:2,name:'TI_1 33kV',v:33,vm:0.98,va:-2.1,p:12000,q:4500},
+ {n:3,name:'TI_2 11kV',v:11,vm:0.96,va:-4.8,p:8500,q:3200},
+ {n:4,name:'TI_3 415V',v:0.415,vm:0.94,va:-7.2,p:640,q:280},
+ {n:5,name:'Gen 11kV',v:11,vm:1.02,va:1.4,p:-6000,q:-1500}];
+let BR=[
+ {f:1,t:2,pf:12000,qf:4500,rate:20000},
+ {f:2,t:3,pf:8500,qf:3200,rate:12000},
+ {f:3,t:4,pf:640,qf:280,rate:1000},
+ {f:2,t:5,pf:-6000,qf:-1500,rate:10000}];
+const GEN=[
+ {u:'G1 · 8 MVA',p:6000,q:1500,vs:1.02,pr:'Base-load'},
+ {u:'G2 · 5 MVA (standby)',p:0,q:0,vs:1.0,pr:'Peaking'}];
+function pill(txt,cls){return `<span class="pill ${cls}">${txt}</span>`;}
+function renderAnalysis(){
+  const tb=$('tbl-bus').querySelector('tbody');tb.innerHTML='';
+  BUS.forEach((b,i)=>{
+    const badV=b.vm<0.9||b.vm>1.1,warnV=!badV&&(b.vm<0.95||b.vm>1.05);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>B${b.n}</td><td>${b.name}</td><td>${b.v}</td>
+      <td contenteditable data-b="${i}" data-k="vm" style="color:var(--accent);outline:none">${b.vm.toFixed(3)}</td>
+      <td>${b.va.toFixed(1)}</td><td>${b.p.toLocaleString()}</td><td>${b.q.toLocaleString()}</td>
+      <td>${badV?pill('VIOLATION','p-fail'):warnV?pill('MARGINAL','p-warn'):pill('OK','p-ok')}</td>`;
+    tb.appendChild(tr);});
+  tb.querySelectorAll('[contenteditable]').forEach(c=>c.addEventListener('blur',e=>{
+    const v=parseFloat(e.target.textContent);if(!isNaN(v)){BUS[+e.target.dataset.b].vm=v;recalcAnalysis(false);}}));
+  const br=$('tbl-branch').querySelector('tbody');br.innerHTML='';
+  BR.forEach(x=>{const ld=Math.hypot(x.pf,x.qf)/x.rate*100;
+    br.innerHTML+=`<tr><td>B${x.f}</td><td>B${x.t}</td><td>${x.pf.toLocaleString()}</td><td>${x.qf.toLocaleString()}</td><td>${ld.toFixed(1)}</td><td>${ld>100?pill('OVERLOAD','p-fail'):ld>80?pill('HIGH','p-warn'):pill('OK','p-ok')}</td></tr>`;});
+  const sc=$('tbl-sc2').querySelector('tbody');sc.innerHTML='';
+  BUS.forEach(b=>{const Isc=(100/(5))/(SQRT3*Math.max(b.v,0.1))*(b.v<1?1:0.15)+ (b.v<1?8.5:1.2);
+    const kA=Isc,Ssc=SQRT3*b.v*kA,Zsc=b.v*1000/(SQRT3*kA)/1000*1000/1000;
+    const brk=kA<=16?'16 kA':kA<=25?'25 kA':kA<=40?'40 kA':'63 kA';
+    sc.innerHTML+=`<tr><td>B${b.n}</td><td>${kA.toFixed(2)}</td><td>${Ssc.toFixed(1)}</td><td>${(b.v*1000/(SQRT3*kA)).toFixed(3)}</td><td>${brk}</td></tr>`;});
+  const vio=BUS.filter(b=>b.vm<0.9||b.vm>1.1).length,marg=BUS.filter(b=>!((b.vm<0.9||b.vm>1.1))&&(b.vm<0.95||b.vm>1.05)).length;
+  const ov=BR.filter(x=>Math.hypot(x.pf,x.qf)/x.rate*100>100).length;
+  const nr=$('tbl-nerc').querySelector('tbody');
+  const rows=[
+    ['Voltage band 0.90–1.10 p.u. (all buses)',vio===0?`${BUS.length-vio}/${BUS.length} pass`:`${vio} violation(s)`,vio===0],
+    ['Alert band 0.95–1.05 p.u.',marg===0?'All normal':`${marg} marginal`,marg===0],
+    ['Branch thermal ≤ 100% rating',ov===0?'All within rating':`${ov} overload(s)`,ov===0],
+    ['N-1: loss of largest branch covered',ov===0?'Pass (demo)':'Review',ov===0]];
+  nr.innerHTML=rows.map(r=>`<tr><td style="text-align:left;font-family:Inter">${r[0]}</td><td>${r[1]}</td><td>${r[2]?pill('PASS','p-ok'):pill('FAIL','p-fail')}</td></tr>`).join('');
+  const g=$('tbl-gen').querySelector('tbody');
+  g.innerHTML=GEN.map(x=>`<tr><td style="text-align:left">${x.u}</td><td>${x.p.toLocaleString()}</td><td>${x.q.toLocaleString()}</td><td>${x.vs.toFixed(2)}</td><td><span class="pill p-info">${x.pr}</span></td></tr>`).join('');
+  R.analysis={buses:BUS.length,violations:vio,marginal:marg,overloads:ov};
+}
+function recalcAnalysis(toastIt=true){renderAnalysis();if(toastIt)toast('↻ Analysis re-evaluated');}
+function resetAnalysis(){location.reload();}
+
+/* ---- SLD ---- */
+/* ---- SLD (ETAP-like: place / wire / operate) ---- */
+let sldSel='bus',sldItems=[],sldWires=[],sldId=0,sldDrag=null,sldDragMoved=false,sldMode='place',sldWireFrom=null,sldBound=false;
+const COMP={gen:{c:'#00e5ff'},tx:{c:'#a78bfa'},brk:{c:'#eab308'},bus:{c:'#22c55e'},motor:{c:'#5b8def'},load:{c:'#eab308'}};
+function sldPos(e){const svg=$('sldCanvas'),r=svg.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*800,y:(e.clientY-r.top)/r.height*420};}
+function sldSetMode(m){sldMode=m;sldWireFrom=null;const l=$('sldMode');if(l)l.textContent=m;document.querySelectorAll('.pal-btn[data-mode]').forEach(x=>x.style.borderColor=x.dataset.mode===m?'var(--accent)':'');drawSLD();}
+function sldNeighbors(id){const n=[];sldWires.forEach(w=>{if(w.a===id)n.push(w.b);if(w.b===id)n.push(w.a);});return n;}
+document.querySelectorAll('.pal-btn[data-comp]').forEach(b=>b.addEventListener('click',()=>{sldSel=b.dataset.comp;const l=$('sldSel');if(l)l.textContent=sldSel;document.querySelectorAll('.pal-btn[data-comp]').forEach(x=>x.style.borderColor='');b.style.borderColor='var(--accent)';if(sldMode!=='place')sldSetMode('place');}));
+function sldEnergized(){const en=new Set(),q=[];sldItems.forEach(i=>{if(i.t==='gen'){en.add(i.id);q.push(i.id);}});while(q.length){const id=q.shift();sldNeighbors(id).forEach(nb=>{if(en.has(nb))return;const it=sldItems.find(x=>x.id===nb);if(it&&(it.t!=='brk'||it.closed!==false)){en.add(nb);q.push(nb);}});}return en;}
+function sldLoadColor(it,live){if(!live)return '#5b6685';const p=it.pct||LOAD_PCT;return p>100?'#ef4444':p>=80?'#eab308':'#22c55e';}
+function sldItemAt(e){const g=e.target&&e.target.closest?e.target.closest('g[data-id]'):null;return g?+g.dataset.id:null;}
+function drawSLD(){
+  const svg=$('sldCanvas');if(!svg||!svg.getAttribute)return;
+  const NS='http://www.w3.org/2000/svg',en=sldEnergized(),byId={};
+  const DEAD=(document.documentElement&&document.documentElement.dataset&&document.documentElement.dataset.theme==='light')?'#9aa5bd':'#3a4763';
+  sldItems.forEach(i=>byId[i.id]=i);
+  svg.innerHTML='';
+  sldWires.forEach(w=>{const a=byId[w.a],b=byId[w.b];if(!a||!b)return;
+    const live=en.has(w.a)&&en.has(w.b);
+    const l=document.createElementNS(NS,'line');
+    l.setAttribute('x1',a.x);l.setAttribute('y1',a.y);l.setAttribute('x2',b.x);l.setAttribute('y2',b.y);
+    l.setAttribute('stroke',live?'#00e5ff':DEAD);l.setAttribute('stroke-width','2.5');
+    l.style.cursor='pointer';
+    l.addEventListener('dblclick',ev=>{ev.stopPropagation();sldWires=sldWires.filter(x=>x.id!==w.id);drawSLD();toast('🔗 Wire removed');});
+    svg.appendChild(l);});
+  sldItems.forEach(it=>{
+    const live=en.has(it.id);
+    const g=document.createElementNS(NS,'g');
+    g.setAttribute('data-id',it.id);g.setAttribute('transform',`translate(${it.x},${it.y})`);g.style.cursor='move';
+    let C=(COMP[it.t]||{}).c||'#fff',sub=it.t.toUpperCase()+it.id;
+    if(it.t==='load'||it.t==='motor'){C=sldLoadColor(it,live);sub+=' '+(it.pct||LOAD_PCT)+'%';}
+    else if(!live)C='#5b6685';
+    let inner='';
+    if(it.t==='gen')inner=`<circle r="20" fill="none" stroke="${C}" stroke-width="2.5"/><text y="7" text-anchor="middle" fill="${C}" font-size="16" font-weight="bold">G</text>`;
+    else if(it.t==='tx')inner=`<circle cy="-10" r="13" fill="none" stroke="${C}" stroke-width="2.5"/><circle cy="10" r="13" fill="none" stroke="${C}" stroke-width="2.5"/>`;
+    else if(it.t==='brk'){const open=it.closed===false;inner=`<rect x="-14" y="-14" width="28" height="28" fill="none" stroke="${open?'#ef4444':C}" stroke-width="2.5"/>`+(open?`<line x1="-14" y1="-14" x2="14" y2="-2" stroke="#ef4444" stroke-width="2.5"/>`:`<line x1="-14" y1="-14" x2="14" y2="14" stroke="${C}" stroke-width="2.5"/>`);sub+=' '+(open?'OPEN':'CLOSED');}
+    else if(it.t==='bus')inner=`<line x1="-45" y1="0" x2="45" y2="0" stroke="${C}" stroke-width="5" stroke-linecap="round"/>`;
+    else if(it.t==='motor')inner=`<circle r="18" fill="none" stroke="${C}" stroke-width="2.5"/><text y="6" text-anchor="middle" fill="${C}" font-size="14" font-weight="bold">M</text>`;
+    else inner=`<line x1="0" y1="-18" x2="0" y2="10" stroke="${C}" stroke-width="2.5"/><polygon points="0,22 -9,4 9,4" fill="${C}"/><line x1="-20" y1="-18" x2="20" y2="-18" stroke="${C}" stroke-width="2.5"/>`;
+    if(sldWireFrom===it.id)inner=`<circle r="27" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="4 3"/>`+inner;
+    g.innerHTML=inner+`<text y="40" text-anchor="middle" fill="#8b96b3" font-size="10">${sub}</text>`;
+    g.addEventListener('mousedown',ev=>{sldDrag={id:it.id};sldDragMoved=false;ev.stopPropagation();});
+    svg.appendChild(g);});
+  if(!sldBound){sldBound=true;
+    window.addEventListener('mousemove',ev=>{if(!sldDrag)return;const p=sldPos(ev);const it=sldItems.find(x=>x.id===sldDrag.id);if(it){if(Math.abs(it.x-p.x)+Math.abs(it.y-p.y)>2)sldDragMoved=true;it.x=Math.round(p.x);it.y=Math.round(p.y);const d=sldDrag;sldDrag=null;drawSLD();sldDrag=d;}});
+    window.addEventListener('mouseup',()=>{sldDrag=null;});
+  }
+  const n=$('sldCount');if(n)n.textContent=sldItems.length+' comps · '+sldWires.length+' wires';
+}
+$('sldCanvas').addEventListener('click',e=>{
+  if(sldDragMoved){sldDragMoved=false;return;}
+  const id=sldItemAt(e),p=sldPos(e);
+  if(sldMode==='place'){sldItems.push({id:++sldId,t:sldSel,x:Math.round(p.x),y:Math.round(p.y),closed:true});drawSLD();}
+  else if(sldMode==='wire'){
+    if(id==null){sldWireFrom=null;drawSLD();return;}
+    if(sldWireFrom==null){sldWireFrom=id;drawSLD();}
+    else if(sldWireFrom!==id){const a=sldWireFrom;sldWireFrom=null;if(!sldWires.some(w=>(w.a===a&&w.b===id)||(w.a===id&&w.b===a))){sldWires.push({id:++sldId,a,b:id});toast('🔗 Connected');}drawSLD();}
+  }else if(sldMode==='operate'){
+    const it=sldItems.find(x=>x.id===id);if(!it)return;
+    if(it.t==='brk'){it.closed=(it.closed===false);toast(it.closed?'⏚ Breaker CLOSED':'⏚ Breaker OPEN');drawSLD();}
+    else if(it.t==='load'||it.t==='motor'){const steps=[50,75,100,125,150];let i=steps.indexOf(it.pct||0);i=(i+1)%steps.length;it.pct=steps[i];toast('💡 Loading → '+it.pct+'%');drawSLD();}
+  }
+});
+$('sldCanvas').addEventListener('dblclick',e=>{const id=sldItemAt(e);if(id!=null){sldItems=sldItems.filter(x=>x.id!==id);sldWires=sldWires.filter(w=>w.a!==id&&w.b!==id);drawSLD();}});
+function clearSLD(){sldItems=[];sldWires=[];sldWireFrom=null;drawSLD();toast('🗑 Canvas cleared');}
+function exportSLD(){
+  const svg=$('sldCanvas').cloneNode(true);svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
+  const blob=new Blob(['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420"><rect width="800" height="420" fill="#090e18"/>'+svg.innerHTML+'</svg>'],{type:'image/svg+xml'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='voltworks-sld.svg';a.click();toast('⬇ SLD exported');
+  R.sld={components:sldItems.length};
+}
+
+/* ---- Report ---- */
+function buildReport(){
+  const d=new Date().toLocaleString('en-GB',{timeZone:'Asia/Jakarta'});
+  const L=[];
+  L.push(`<h2>⚡ VoltWorks Engineering Report</h2><div class="meta">Generated ${d} WIB · VoltWorks Power · all values computed client-side · std: ${STD.fault} / ${STD.cable} / ${STD.tx}</div>`);
+  L.push(`<h4>1 · Executive summary</h4><p>${R.analysis?`Network: ${R.analysis.buses} buses, ${R.analysis.violations} voltage violation(s), ${R.analysis.marginal} marginal, ${R.analysis.overloads} branch overload(s).`: 'Network analysis not yet evaluated — see Analysis section.'} Module results included below reflect the latest “Calculate” run in each card.</p>`);
+  const mod=(t,o)=>{if(!o)return `<li><b>${t}:</b> not run yet</li>`;return `<li><b>${t}:</b> ${o}</li>`;};
+  L.push('<h4>2 · Calculation results</h4><ul>'
+    +mod('Feeder VD',R.line?`${R.line.vDpct.toFixed(2)}% drop, ${R.line.vLoad.toFixed(3)} kV at load, ${R.line.iLoad.toFixed(1)} A`:'')
+    +mod('Transformer',R.tr?`${R.tr.rec} recommended, ${R.tr.util.toFixed(1)}% loaded, Isc ${R.tr.scSym.toFixed(2)} kA`:'')
+    +mod('Cable',R.cable?`${R.cable.mm} mm² Cu, ${R.cable.vdPct.toFixed(2)}% VD, ${R.cable.I.toFixed(1)} A`:'')
+    +mod('Short-circuit',R.sc?`${R.sc.Ik.toFixed(2)} kA sym / ${R.sc.M.toFixed(2)} kA momentary`: '')
+    +'</ul>');
+  L.push(`<h4>3 · Method + assumptions</h4><p>VD: 3φ I(R·cosφ+X·sinφ). Fault: Z=V²/S with %Z + feeder Z, momentary ×1.15. Cable: Cu/XLPE CCC with install × ambient derates, VD=√3·I·R·L/V. Per-unit base ${BASE.mva} MVA / ${BASE.kv} kV.</p>`);
+  L.push(`<h4>4 · SLD</h4><p>${R.sld?R.sld.components+' component(s) placed on canvas.': 'No SLD composed yet — export SVG from the builder when ready.'}</p>`);
+  L.push('<h4>5 · Sign-off</h4><p>Checked by: ____________ &nbsp;&nbsp; Date: ____________ &nbsp;&nbsp; Status: ☐ Approved ☐ Revise</p>');
+  const out=$('reportOut');out.innerHTML=L.join('');out.classList.add('show');
+  out.scrollIntoView({behavior:'smooth'});toast('📄 Report generated');
+}
+
+/* ---- Live load study (0-150%) + canvas ---- */
+let LOAD_PCT=100;
+function studyVD(loadKw){const pf=gv('pf')||1,vSec=gv('vSecondary')||0.4,km=gv('lineLength')/1000,rT=gv('lineR')*km,xT=gv('lineX')*km;const i=loadKw/(SQRT3*vSec*pf),s=Math.sqrt(Math.max(0,1-pf*pf));return i*(rT*pf+xT*s)/(vSec*1000)*100;}
+function studyUtil(loadKw){const pf=gv('pf')||0.85,kva=gv('transformerKva')||1;return loadKw/pf/kva*100;}
+function studyCable(loadKw){const P=loadKw*1000,V=gv('cVolt')||400,pf=gv('cPf')||0.85,L=gv('cLen')||1,der=(gv('cInst')||1)*(gv('cAmb')||1);const I=P/(SQRT3*V*pf);let pk=0.062;for(const c of CU){if(c[1]>=I/der){pk=c[2];break;}}return SQRT3*I*pk*L/1000/V*100;}
+function liveStudy(){
+  LOAD_PCT=parseFloat($('loadPct').value)||0;$('loadPctVal').textContent=LOAD_PCT+'%';
+  const f=LOAD_PCT/100,vd=studyVD((gv('loadKw')||500)*f),ut=studyUtil((gv('loadKw')||500)*f),cvd=studyCable((gv('cLoad')||90)*f);
+  $('grid-live').innerHTML=[{v:vd.toFixed(2)+'%',l:'Feeder VD',cls:vd<=5?'pass':'fail'},{v:ut.toFixed(1)+'%',l:'TX loading',cls:ut>100?'fail':ut>80?'warn':'pass'},{v:cvd.toFixed(2)+'%',l:'Cable VD'}].map(c=>`<div class="rcard"><div class="rv ${c.cls||'info'}">${c.v}</div><div class="rl">${c.l}</div></div>`).join('');
+  drawLive();drawSLD();
+}
+function drawLive(){
+  const cv=$('liveCanvas');if(!cv||!cv.getContext)return;const g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  const base=gv('loadKw')||500,cbase=gv('cLoad')||90;
+  const L=document.documentElement&&document.documentElement.dataset&&document.documentElement.dataset.theme==='light';
+  const cBG=L?'#eef1f8':'#090e18',cGRID=L?'#c4cede':'#22304d',cCUR=L?'#131a29':'#e8edf7';
+  g.clearRect(0,0,W,H);g.fillStyle=cBG;g.fillRect(0,0,W,H);
+  const pl=44,pr=10,pt=12,pb=24,pw=W-pl-pr,ph=H-pt-pb;
+  const X=f=>pl+pw*f/150,Y=v=>pt+ph*(1-Math.min(v,160)/160);
+  g.strokeStyle=cGRID;g.fillStyle='#5b6685';g.font='10px Inter,sans-serif';g.lineWidth=1;
+  for(let f=0;f<=150;f+=30){g.beginPath();g.moveTo(X(f),pt);g.lineTo(X(f),H-pb);g.stroke();g.fillText(f+'%',X(f)-8,H-8);}
+  [5,80,100].forEach(v=>{g.fillText(v+'%',4,Y(v));});
+  g.setLineDash([5,4]);g.strokeStyle='rgba(239,68,68,.6)';
+  g.beginPath();g.moveTo(pl,Y(5));g.lineTo(W-pr,Y(5));g.stroke();
+  g.strokeStyle='rgba(234,179,8,.6)';g.beginPath();g.moveTo(pl,Y(100));g.lineTo(W-pr,Y(100));g.stroke();g.setLineDash([]);
+  [{fn:f=>studyVD(base*f/100),c:'#00e5ff'},{fn:f=>studyUtil(base*f/100),c:'#a78bfa'},{fn:f=>studyCable(cbase*f/100),c:'#22c55e'}].forEach(c=>{g.strokeStyle=c.c;g.lineWidth=2;g.beginPath();for(let f=0;f<=150;f+=3){const x=X(f),y=Y(c.fn(f));f===0?g.moveTo(x,y):g.lineTo(x,y);}g.stroke();});
+  g.lineWidth=1;g.strokeStyle=cCUR;g.beginPath();g.moveTo(X(LOAD_PCT),pt);g.lineTo(X(LOAD_PCT),H-pb);g.stroke();
+  g.font='11px Inter,sans-serif';
+  g.fillStyle='#00e5ff';g.fillText('— VD%',pl+6,pt+12);g.fillStyle='#a78bfa';g.fillText('— TX load%',pl+64,pt+12);g.fillStyle='#22c55e';g.fillText('— cable VD%',pl+152,pt+12);
+}
+
+/* ---- Theme toggle ---- */
+function toggleTheme(){const h=document.documentElement;const light=h.dataset.theme!=='light';if(light)h.dataset.theme='light';else h.dataset.theme='';$('themeBtn').textContent=light?'☀️':'🌙';try{localStorage.setItem('vw-theme',light?'light':'dark');}catch(e){}drawLive();drawSLD();}
+try{if(localStorage.getItem('vw-theme')==='light'){document.documentElement.dataset.theme='light';}}catch(e){}
+
+/* nav + init */
+document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+  document.getElementById('sec-'+b.dataset.sec).scrollIntoView({behavior:'smooth'});}));
+$('footDate').textContent=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+renderAnalysis();stdChanged();liveStudy();
+</script>
+</body>
+</html>
