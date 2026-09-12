@@ -158,6 +158,7 @@ footer{text-align:center;padding:26px;font-size:11.5px;color:var(--muted);border
     <button class="nav-btn" data-sec="report">Report</button>
   </nav>
   <button class="btn ghost" id="themeBtn" onclick="toggleTheme()" title="Toggle light/dark theme" style="width:auto;padding:8px 14px;margin-top:0">🌙</button>
+  <button class="btn ghost" id="resetBtn" onclick="vwReset()" title="Clear saved inputs and restore defaults" style="width:auto;padding:8px 14px;margin-top:0">↩ Reset</button>
   <div class="status-pill"><span class="dot"></span><span id="statusText">Ready · client-side</span></div>
 </header>
 
@@ -613,11 +614,26 @@ function drawLive(){
 function toggleTheme(){const h=document.documentElement;const light=h.dataset.theme!=='light';if(light)h.dataset.theme='light';else h.dataset.theme='';$('themeBtn').textContent=light?'☀️':'🌙';try{localStorage.setItem('vw-theme',light?'light':'dark');}catch(e){}drawLive();drawSLD();}
 try{if(localStorage.getItem('vw-theme')==='light'){document.documentElement.dataset.theme='light';}}catch(e){}
 
+/* ---- Input persistence (localStorage, versioned) ---- */
+const VW_STORE_KEY='voltworks-power-v1';
+const VW_FIELDS=Array.from(document.querySelectorAll('input[id],select[id],textarea[id]'));
+const VW_DEFAULTS={};
+function vwRead(el){return (el.type==='checkbox'||el.type==='radio')?el.checked:el.value;}
+function vwWrite(el,v){if(v===undefined||v===null)return;if(el.type==='checkbox'||el.type==='radio')el.checked=!!v;else el.value=v;}
+VW_FIELDS.forEach(el=>{VW_DEFAULTS[el.id]=vwRead(el);});
+function vwSave(){try{const s={};VW_FIELDS.forEach(el=>{s[el.id]=vwRead(el);});localStorage.setItem(VW_STORE_KEY,JSON.stringify(s));}catch(e){}}
+let vwT=null;
+function vwSaveSoon(){clearTimeout(vwT);vwT=setTimeout(vwSave,300);}
+function vwRestore(){let s=null;try{s=JSON.parse(localStorage.getItem(VW_STORE_KEY)||'null');}catch(e){}if(!s||typeof s!=='object')return;VW_FIELDS.forEach(el=>{if(Object.prototype.hasOwnProperty.call(s,el.id))vwWrite(el,s[el.id]);});}
+function vwReset(){try{localStorage.removeItem(VW_STORE_KEY);}catch(e){}VW_FIELDS.forEach(el=>vwWrite(el,VW_DEFAULTS[el.id]));saveBase();renderAnalysis();stdChanged();liveStudy();toast('↩ Inputs reset to defaults');}
+['input','change'].forEach(ev=>document.addEventListener(ev,e=>{const t=e.target;if(t&&t.id&&/^(INPUT|SELECT|TEXTAREA)$/.test(t.tagName))vwSaveSoon();}));
+
 /* nav + init */
 document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');
   document.getElementById('sec-'+b.dataset.sec).scrollIntoView({behavior:'smooth'});}));
 $('footDate').textContent=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+vwRestore();
 renderAnalysis();stdChanged();liveStudy();
 </script>
 </body>
