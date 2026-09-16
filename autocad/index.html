@@ -77,6 +77,10 @@ body {
 .desc { font-size:12.5px; color:var(--muted); line-height:1.45; }
 .video-wrap { margin-top:12px; }
 .video-clip { display:block; width:100%; height:auto; aspect-ratio:16/9; background:#000; border-radius:8px; border:1px solid var(--border); }
+.video-placeholder { display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,rgba(0,229,255,.06),rgba(255,159,28,.06)); border:1px dashed rgba(0,229,255,.25); }
+.vp-inner { display:flex; flex-direction:column; align-items:center; gap:6px; padding:18px 10px; text-align:center; }
+.vp-label { font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700; color:var(--cyan); letter-spacing:.3px; }
+.vp-sub { font-size:11px; color:var(--muted); }
 .video-play { display:block; width:100%; background:none; border:none; cursor:pointer; padding:0;
   text-align:left; color:inherit; font:inherit; }
 .video-frame { position:relative; border-radius:8px; overflow:hidden; border:1px solid var(--border);
@@ -198,10 +202,13 @@ CATS.forEach(([cid, label, ico]) => {
           <h3 class="cmd">${cmd}</h3>
           <p class="desc">${desc}</p>
           <div class="video-wrap">
-            <video class="video-clip" controls preload="metadata" playsinline>
-              <source src="${vidFile}" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
+            <div class="video-clip video-placeholder" data-cat="${cid}" title="Video coming soon for ${label}">
+              <div class="vp-inner">
+                <svg viewBox="0 0 60 60" width="44" height="44" fill="none" stroke="rgba(0,229,255,.4)" stroke-width="1.5"><rect x="10" y="14" width="40" height="32" rx="4"/><polygon points="26,24 26,36 38,30" fill="rgba(0,229,255,.4)"/></svg>
+                <span class="vp-label">Video for ${label}</span>
+                <span class="vp-sub">coming soon</span>
+              </div>
+            </div>
           </div>
         </article>`;
   });
