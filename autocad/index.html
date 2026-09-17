@@ -3,298 +3,1051 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AutoCAD Hotkey &amp; Command Guide</title>
-<meta name="description" content="200+ real AutoCAD hotkeys and commands with descriptions, video placeholders, and copy-to-clipboard.">
+<title>AutoCAD Hotkey & Command Guide</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0a0c10; --surface: #11141b; --surface2: #181c25;
-  --border: #232838; --text: #e6e9f0; --muted: #8b93a7;
-  --cyan: #00e5ff; --orange: #ff9f1c; --green: #22c55e;
-  --radius: 10px; --shadow: 0 8px 30px rgba(0,0,0,.45);
+  --bg: #0a0c10;
+  --surface: #12151a;
+  --surface-2: #181d24;
+  --surface-hover: #1e242c;
+  --border: #1f2730;
+  --border-subtle: #1a2028;
+  --text: #e8ecf1;
+  --text-secondary: #8892a0;
+  --text-muted: #5a6470;
+  --accent: #00e5ff;
+  --accent-dim: #00b8cc;
+  --accent-glow: rgba(0, 229, 255, 0.15);
+  --orange: #ff9f1c;
+  --orange-dim: #cc7f16;
+  --orange-glow: rgba(255, 159, 28, 0.12);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Inter', -apple-system, sans-serif;
+  --transition: cubic-bezier(0.4, 0, 0.2, 1);
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
 body {
-  font-family:'Inter',system-ui,sans-serif; background:var(--bg); color:var(--text);
-  min-height:100vh; line-height:1.5;
-  background-image:linear-gradient(rgba(0,229,255,.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,229,255,.03) 1px, transparent 1px);
-  background-size:40px 40px;
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
-.app { display:flex; min-height:100vh; }
-.sidebar { position:sticky; top:0; height:100vh; width:230px; flex-shrink:0;
-  background:var(--surface); border-right:1px solid var(--border); padding:20px 14px; overflow-y:auto; z-index:50; }
-.sidebar h2 { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700;
-  text-transform:uppercase; letter-spacing:1.5px; color:var(--muted); margin:0 0 12px 8px; }
-.side-link { display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:8px;
-  color:var(--muted); text-decoration:none; font-size:13px; font-weight:600; transition:all .15s; }
-.side-link:hover { background:var(--surface2); color:var(--text); }
-.side-link.active { background:rgba(0,229,255,.1); color:var(--cyan); }
-.side-ico { font-size:15px; width:20px; text-align:center; }
-.side-count { margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:10px;
-  background:var(--surface2); padding:2px 8px; border-radius:10px; color:var(--muted); }
-.main { flex:1; padding:0 0 60px; }
-.hero { padding:60px 32px 40px; text-align:center; border-bottom:1px solid var(--border); }
-.hero h1 { font-family:'Inter',sans-serif; font-size:clamp(30px,4.5vw,48px); font-weight:800; letter-spacing:-1.5px; line-height:1.1; }
-.hero h1 span { color:var(--cyan); }
-.hero p { color:var(--muted); margin:12px auto 28px; max-width:560px; font-size:14.5px; }
-.search-row { display:flex; gap:10px; max-width:640px; margin:0 auto 14px; }
-.search-row input { flex:1; padding:13px 18px; background:var(--surface); border:1px solid var(--border);
-  border-radius:var(--radius); color:var(--text); font-family:'Inter',sans-serif; font-size:14px;
-  outline:none; transition:border-color .15s; }
-.search-row input:focus { border-color:var(--cyan); box-shadow:0 0 0 3px rgba(0,229,255,.12); }
-.filter-row { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
-.filter-btn { padding:7px 16px; border-radius:20px; border:1px solid var(--border); background:var(--surface);
-  color:var(--muted); font-family:'Inter',sans-serif; font-size:12px; font-weight:600; cursor:pointer; transition:all .15s; }
-.filter-btn:hover { border-color:var(--cyan); color:var(--text); }
-.filter-btn.active { background:var(--cyan); color:#04121a; border-color:var(--cyan); }
-.progress-wrap { max-width:640px; margin:22px auto 0; }
-.progress-label { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); margin-bottom:6px;
-  display:flex; justify-content:space-between; }
-.progress-bar { height:6px; background:var(--surface2); border-radius:3px; overflow:hidden; }
-.progress-fill { height:100%; background:linear-gradient(90deg,var(--cyan),var(--orange)); border-radius:3px; transition:width .4s ease; }
-.section { padding:40px 32px 0; scroll-margin-top:20px; }
-.section-head { display:flex; align-items:baseline; gap:12px; margin-bottom:20px; }
-.section-head h2 { font-size:22px; font-weight:800; letter-spacing:-.5px; }
-.section-head .num { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--cyan);
-  background:rgba(0,229,255,.08); border:1px solid rgba(0,229,255,.2); padding:2px 10px; border-radius:12px; }
-.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; }
-.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
-  padding:18px; transition:border-color .2s, transform .2s; }
-.card:hover { border-color:rgba(0,229,255,.4); transform:translateY(-2px); }
-.card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
-.key { font-family:'JetBrains Mono',monospace; font-size:15px; font-weight:700; background:var(--surface2);
-  border:1px solid var(--border); border-radius:6px; padding:5px 12px; color:var(--cyan); letter-spacing:.5px; }
-.copy-btn { display:flex; align-items:center; gap:5px; padding:5px 10px; background:var(--surface2);
-  border:1px solid var(--border); border-radius:6px; color:var(--muted); font-family:'Inter',sans-serif;
-  font-size:11px; font-weight:600; cursor:pointer; transition:all .15s; }
-.copy-btn:hover { border-color:var(--cyan); color:var(--cyan); }
-.copy-btn.copied { border-color:var(--green); color:var(--green); }
-.cmd { font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700; color:var(--orange);
-  margin-bottom:4px; letter-spacing:.3px; }
-.desc { font-size:12.5px; color:var(--muted); line-height:1.45; }
-.video-wrap { margin-top:12px; }
-.video-clip { display:block; width:100%; height:auto; aspect-ratio:16/9; background:#000; border-radius:8px; border:1px solid var(--border); }
-.video-placeholder { display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,rgba(0,229,255,.06),rgba(255,159,28,.06)); border:1px dashed rgba(0,229,255,.25); }
-.video-placeholder.hidden { display:none; }
-.vp-inner { display:flex; flex-direction:column; align-items:center; gap:6px; padding:18px 10px; text-align:center; }
-.vp-label { font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700; color:var(--cyan); letter-spacing:.3px; }
-.vp-sub { font-size:11px; color:var(--muted); }
-.video-iframe { display:block; width:100%; height:auto; aspect-ratio:16/9; border-radius:8px; border:1px solid var(--border); background:#000; }
-.video-play { display:block; width:100%; background:none; border:none; cursor:pointer; padding:0;
-  text-align:left; color:inherit; font:inherit; }
-.video-frame { position:relative; border-radius:8px; overflow:hidden; border:1px solid var(--border);
-  transition:border-color .15s, transform .15s; background:var(--surface2); }
-.video-play:hover .video-frame { border-color:var(--cyan); transform:translateY(-1px); }
-.video-thumb { display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:cover; background:var(--surface2); }
-.video-overlay { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center;
-  justify-content:center; gap:6px; background:rgba(10,12,16,.45); transition:background .15s; }
-.video-play:hover .video-overlay { background:rgba(10,12,16,.3); }
-.video-overlay svg { color:#fff; filter:drop-shadow(0 2px 8px rgba(0,0,0,.5)); }
-.video-label { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600; color:#fff;
-  letter-spacing:.3px; text-shadow:0 1px 4px rgba(0,0,0,.5); }
-.video-frame.video-fallback .video-thumb { display:none; }
-.video-frame.video-fallback .video-overlay { position:static; padding:20px; background:var(--surface2); }
-.video-frame.video-fallback .video-overlay svg { color:var(--cyan); }
-.video-frame.video-fallback .video-label { color:var(--cyan); text-shadow:none; }
-#toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
-  background:var(--surface2); border:1px solid var(--green); color:var(--green); padding:10px 20px;
-  border-radius:10px; font-size:13px; font-weight:600; opacity:0; transition:all .25s; z-index:100; pointer-events:none; }
-#toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-footer { text-align:center; padding:30px; font-size:11.5px; color:var(--muted);
-  border-top:1px solid var(--border); margin-top:40px; }
-.video-link { display:block; position:relative; border-radius:8px; overflow:hidden;
-  border:1px solid var(--border); transition:border-color .15s, transform .15s;
-  text-decoration:none; color:var(--muted); }
-.video-link:hover { border-color:var(--cyan); transform:translateY(-1px); }
-.video-link-img { display:block; width:100%; height:auto; aspect-ratio:16/9;
-  object-fit:cover; background:var(--surface2); }
-.video-link-overlay { position:absolute; inset:0; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; gap:6px;
-  background:rgba(10,12,16,.45); transition:background .15s; }
-.video-link:hover .video-link-overlay { background:rgba(10,12,16,.3); }
-.video-link-overlay svg { color:#fff; filter:drop-shadow(0 2px 8px rgba(0,0,0,.5)); }
-.video-link-label { font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600;
-  color:#fff; letter-spacing:.3px; text-shadow:0 1px 4px rgba(0,0,0,.5); }
-.video-link-fallback .video-link-img { display:none; }
-.video-link-fallback .video-link-overlay { position:static; padding:20px; background:var(--surface2); }
-.video-link-fallback .video-link-overlay svg { color:var(--cyan); }
-.video-link-fallback .video-link-label { color:var(--cyan); text-shadow:none; }
-@media (max-width:860px) {
-  .app { flex-direction:column; }
-  .sidebar { position:static; width:100%; height:auto; border-right:none; border-bottom:1px solid var(--border); padding:14px; }
-  .sidebar nav { display:flex; flex-wrap:wrap; gap:4px; }
-  .side-link { padding:6px 10px; font-size:12px; }
-  .side-count { display:none; }
-  .hero { padding:40px 16px 28px; }
-  .section { padding:28px 16px 0; }
-  .grid { grid-template-columns:1fr; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* Header */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 12, 16, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.header-brand svg {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.header-brand .accent { color: var(--accent); }
+
+.header-search {
+  flex: 1;
+  max-width: 520px;
+  position: relative;
+}
+
+.header-search input {
+  width: 100%;
+  padding: 0.6rem 1rem 0.6rem 2.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s var(--transition), box-shadow 0.2s var(--transition);
+}
+
+.header-search input::placeholder { color: var(--text-muted); }
+
+.header-search input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.header-search svg {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* Progress bar */
+.progress-bar {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--orange));
+  z-index: 99;
+  transition: width 0.1s linear;
+  border-radius: 0 1px 1px 0;
+}
+
+/* Layout */
+.layout {
+  display: flex;
+  min-height: calc(100vh - 64px);
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border-subtle);
+  padding: 1.5rem 0;
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+
+.sidebar-section {
+  padding: 0 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  padding-left: 0.5rem;
+}
+
+.sidebar-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+
+.sidebar-link:hover { color: var(--text); background: var(--surface); }
+.sidebar-link.active { color: var(--accent); background: var(--accent-glow); }
+.sidebar-link .count {
+  margin-left: auto;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+}
+
+.sidebar-link.active .count { background: rgba(0, 229, 255, 0.1); color: var(--accent); }
+
+/* Main content */
+.main {
+  flex: 1;
+  padding: 2rem 2.5rem 4rem;
+  max-width: 1400px;
+}
+
+.section-header {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+
+.section-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Command grid */
+.command-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1rem;
+}
+
+/* Command card */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: border-color 0.2s var(--transition), box-shadow 0.2s var(--transition), transform 0.2s var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.card-thumb {
+  width: 88px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-2);
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+  transition: opacity 0.2s, transform 0.3s;
+}
+
+.card:hover .card-thumb img { opacity: 1; transform: scale(1.05); }
+
+.card-thumb .play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.card-thumb:hover .play-overlay { opacity: 1; }
+
+.card-thumb .play-overlay svg {
+  width: 22px;
+  height: 22px;
+  color: white;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.card-thumb .clip-time {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  background: rgba(0, 0, 0, 0.75);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.card-body { flex: 1; min-width: 0; }
+
+.card-cmd {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  margin-bottom: 0.15rem;
+}
+
+.card-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+}
+
+.card-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+.key-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: var(--surface-2);
+  color: var(--orange);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+  letter-spacing: 0.02em;
+}
+
+.card-copy {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s, color 0.2s, background 0.2s;
+}
+
+.card:hover .card-copy { opacity: 1; }
+.card-copy:hover { color: var(--accent); background: var(--accent-glow); border-color: var(--accent-dim); }
+.card-copy svg { width: 13px; height: 13px; }
+.card-copy.copied { color: var(--accent); border-color: var(--accent); }
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s var(--transition);
+}
+
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 800px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  transform: scale(0.95);
+  transition: transform 0.3s var(--transition);
+}
+
+.modal-overlay.open .modal { transform: scale(1); }
+
+.modal-video {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  background: #000;
+}
+
+.modal-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.modal-info {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.modal-info-text { flex: 1; }
+.modal-info-cmd {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.15rem;
+}
+.modal-info-name { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+.modal-info-time { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem; font-family: var(--font-mono); }
+
+.modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: color 0.2s, background 0.2s;
+}
+.modal-close:hover { color: var(--text); background: var(--border); }
+.modal-close svg { width: 16px; height: 16px; }
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-muted);
+}
+
+.empty-state svg { width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.4; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.6rem 1.25rem;
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: var(--shadow);
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+  white-space: nowrap;
+}
+
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast .toast-accent { color: var(--accent); font-family: var(--font-mono); font-weight: 600; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .layout { flex-direction: column; }
+  .sidebar {
+    width: 100%;
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    flex-wrap: wrap;
+  }
+  .sidebar-section { padding: 0; margin-bottom: 0; }
+  .sidebar-title { display: none; }
+  .sidebar-list { flex-direction: row; gap: 0.4rem; }
+  .sidebar-link { white-space: nowrap; padding: 0.4rem 0.7rem; }
+  .main { padding: 1.5rem 1rem 3rem; }
+  .command-grid { grid-template-columns: 1fr; }
+  .header { padding: 0 1rem; }
+  .header-brand span { display: none; }
+}
+
+@media (max-width: 600px) {
+  .header-search { max-width: 200px; }
+  .modal-overlay { padding: 0.5rem; }
 }
 </style>
 </head>
 <body>
-<div class="app">
-  <aside class="sidebar">
-    <h2>Categories</h2>
-    <nav>
-          <a href="#cat-draw" class="side-link" data-cat="draw"><span class="side-ico">✏️</span>Draw <span class="side-count" data-count="draw">0</span></a>
-          <a href="#cat-modify" class="side-link" data-cat="modify"><span class="side-ico">🔧</span>Modify <span class="side-count" data-count="modify">0</span></a>
-          <a href="#cat-annotation" class="side-link" data-cat="annotation"><span class="side-ico">📝</span>Annotation <span class="side-count" data-count="annotation">0</span></a>
-          <a href="#cat-layers" class="side-link" data-cat="layers"><span class="side-ico">📑</span>Layers <span class="side-count" data-count="layers">0</span></a>
-          <a href="#cat-view" class="side-link" data-cat="view"><span class="side-ico">🔍</span>View <span class="side-count" data-count="view">0</span></a>
-          <a href="#cat-dimension" class="side-link" data-cat="dimension"><span class="side-ico">📏</span>Dimension <span class="side-count" data-count="dimension">0</span></a>
-          <a href="#cat-block" class="side-link" data-cat="block"><span class="side-ico">🧱</span>Block <span class="side-count" data-count="block">0</span></a>
-          <a href="#cat-misc" class="side-link" data-cat="misc"><span class="side-ico">⌨️</span>Misc <span class="side-count" data-count="misc">0</span></a>
-    </nav>
-  </aside>
-  <div class="main">
-    <div class="hero">
-      <h1>AutoCAD Hotkey <span>&amp;</span> Command Guide</h1>
-      <p>200+ real AutoCAD hotkeys with descriptions, video placeholders, and one-click copy. Search, filter, and learn faster.</p>
-      <div class="search-row">
-        <input type="text" id="searchInput" placeholder="Search hotkey or command (e.g. TR, TRIM, mirror...)" aria-label="Search hotkeys">
-      </div>
-      <div class="filter-row">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="draw">Draw</button>
-        <button class="filter-btn" data-filter="modify">Modify</button>
-        <button class="filter-btn" data-filter="annotation">Annotation</button>
-        <button class="filter-btn" data-filter="layers">Layers</button>
-        <button class="filter-btn" data-filter="view">View</button>
-        <button class="filter-btn" data-filter="dimension">Dimension</button>
-        <button class="filter-btn" data-filter="block">Block</button>
-        <button class="filter-btn" data-filter="misc">Misc</button>
-      </div>
-      <div class="progress-wrap">
-        <div class="progress-label"><span id="progressText">413 hotkeys covered</span><span id="progressPct">100%</span></div>
-        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:100%"></div></div>
-      </div>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<header class="header">
+  <a class="header-brand" href="#">
+    <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="4,4 28,4 28,20 16,28 4,20"/>
+      <line x1="10" y1="10" x2="22" y2="10"/>
+      <line x1="10" y1="15" x2="18" y2="15"/>
+    </svg>
+    <span>AutoCAD <span class="accent">Guide</span></span>
+  </a>
+  <div class="header-search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="searchInput" placeholder="Search commands, keys, or descriptions...">
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Categories</div>
+      <ul class="sidebar-list" id="categoryList"></ul>
     </div>
-    <div id="sections"></div>
-    <footer>AutoCAD Hotkey &amp; Command Guide &middot; 413 hotkeys &middot; Video placeholders ready &middot; Built for power users</footer>
+  </nav>
+
+  <main class="main">
+    <div class="section-header">
+      <h1 class="section-title" id="sectionTitle">All Commands</h1>
+      <p class="section-subtitle" id="sectionSubtitle"></p>
+    </div>
+    <div class="command-grid" id="commandGrid"></div>
+    <div class="empty-state" id="emptyState" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <p>No commands found matching your search.</p>
+    </div>
+  </main>
+</div>
+
+<!-- Video Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-video" id="modalVideo"></div>
+    <div class="modal-info">
+      <div class="modal-info-text">
+        <div class="modal-info-cmd" id="modalCmd"></div>
+        <div class="modal-info-name" id="modalName"></div>
+        <div class="modal-info-time" id="modalTime"></div>
+      </div>
+      <button class="modal-close" id="modalClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
   </div>
 </div>
-<div id="toast"></div>
+
+<div class="toast" id="toast"></div>
+
 <script>
-const HOTKEYS = [["L", "LINE", "Creates straight line segments", "draw"], ["C", "CIRCLE", "Creates a circle by center and radius", "draw"], ["A", "ARC", "Creates an arc by three points", "draw"], ["REC", "RECTANG", "Creates a rectangle by two corners", "draw"], ["POL", "POLYGON", "Creates a regular polygon", "draw"], ["PL", "PLINE", "Creates a 2D polyline (connected segments)", "draw"], ["SPL", "SPLINE", "Creates a smooth NURBS curve", "draw"], ["EL", "ELLIPSE", "Creates an ellipse or elliptical arc", "draw"], ["DO", "DONUT", "Creates a filled ring or solid circle", "draw"], ["PO", "POINT", "Creates a point object", "draw"], ["H", "HATCH", "Fills a closed area with a pattern or solid", "draw"], ["GRAD", "GRADIENT", "Fills a closed area with a gradient", "draw"], ["REG", "REGION", "Creates a region object from a closed boundary", "draw"], ["WIPEOUT", "WIPEOUT", "Masks objects with a blank area", "draw"], ["SOLID", "SOLID", "Creates filled triangles and quadrilaterals", "draw"], ["ML", "MLINE", "Creates multiple parallel lines", "draw"], ["XLINE", "XLINE", "Creates an infinite construction line", "draw"], ["RAY", "RAY", "Creates a line starting at a point extending infinitely", "draw"], ["SKETCH", "SKETCH", "Creates freehand line segments", "draw"], ["3DPOLY", "3DPOLY", "Creates a 3D polyline", "draw"], ["HELIX", "HELIX", "Creates a 3D spiral", "draw"], ["CLOUD", "REVCLOUD", "Creates a revision cloud from arcs", "draw"], ["TABLE", "TABLE", "Creates an empty table object", "draw"], ["MT", "MTEXT", "Creates multiline text", "draw"], ["DT", "TEXT", "Creates single-line text", "draw"], ["LE", "LEADER", "Creates a leader line with annotation", "draw"], ["MLE", "MLEADER", "Creates a multileader with multiple arrowheads", "draw"], ["QLEADER", "QLEADER", "Quick leader with preset annotation", "draw"], ["TOL", "TOLERANCE", "Creates a geometric tolerance frame", "draw"], ["BOUNDARY", "BOUNDARY", "Creates a region or polyline from enclosed area", "draw"], ["DIVIDE", "DIVIDE", "Places point objects along an object at equal intervals", "draw"], ["MEASURE", "MEASURE", "Places point objects at specified intervals", "draw"], ["PEDIT", "PEDIT", "Edits polylines and 3D meshes", "draw"], ["SPLINEDIT", "SPLINEDIT", "Edits spline objects", "draw"], ["MLEDIT", "MLEDIT", "Edits multileader objects", "draw"], ["CHPROP", "CHPROP", "Changes object properties", "draw"], ["MATCHPROP", "MATCHPROP", "Copies properties from one object to others", "draw"], ["PROPERTIES", "PROPERTIES", "Opens the Properties palette", "draw"], ["TEXTTOFRONT", "TEXTTOFRONT", "Brings text and dimensions to front", "draw"], ["OVERKILL", "OVERKILL", "Removes duplicate or overlapping geometry", "draw"], ["AUDIT", "AUDIT", "Checks and repairs drawing errors", "draw"], ["RECOVER", "RECOVER", "Repairs a corrupted drawing file", "draw"], ["PURGE", "PURGE", "Removes unused named objects", "draw"], ["RENAME", "RENAME", "Renames blocks, layers, styles, etc.", "draw"], ["GROUP", "GROUP", "Creates a named group of objects", "draw"], ["UNGROUP", "UNGROUP", "Dissolves a group", "draw"], ["ORDER", "DRAWORDER", "Changes draw order of objects", "draw"], ["REVERSE", "REVERSE", "Reverses the direction of an object", "draw"], ["FLATTEN", "FLATTEN", "Projects 3D geometry to 2D plane", "draw"], ["THICKEN", "THICKEN", "Converts surfaces to 3D solids", "draw"], ["CONVTOSOLID", "CONVTOSOLID", "Converts objects to 3D solids", "draw"], ["CONVTOSURFACE", "CONVTOSURFACE", "Converts objects to surfaces", "draw"], ["CONVTOMESH", "CONVTOMESH", "Converts objects to mesh", "draw"], ["SMOOTHMESH", "SMOOTHMESH", "Increases mesh smoothness", "draw"], ["CREASE", "CREASE", "Adds a crease to a mesh", "draw"], ["SPLITMESH", "SPLITMESH", "Splits a mesh face", "draw"], ["STRETCH", "STRETCH", "Stretches objects by moving endpoints", "draw"], ["ROTATE3D", "ROTATE3D", "Rotates around a 3D axis", "draw"], ["3DMIRROR", "3DMIRROR", "Mirrors across a 3D plane", "draw"], ["3DARRAY", "3DARRAY", "Creates 3D rectangular or polar arrays", "draw"], ["3DROTATE", "3DROTATE", "Rotates objects in 3D space", "draw"], ["3DSCALE", "3DSCALE", "Scales objects in 3D", "draw"], ["3DMOVE", "3DMOVE", "Moves objects in 3D", "draw"], ["3DORBIT", "3DORBIT", "Free 3D orbit navigation", "draw"], ["3DCORBIT", "3DCORBIT", "Continuous 3D orbit", "draw"], ["3DDISTANCE", "3DDISTANCE", "Adjusts 3D view distance", "draw"], ["3DPAN", "3DPAN", "Pans in 3D view", "draw"], ["3DZOOM", "3DZOOM", "Zooms in 3D view", "draw"], ["3DSWIVEL", "3DSWIVEL", "Swivels the 3D view", "draw"], ["3DCLIP", "3DCLIP", "Activates 3D clipping plane", "draw"], ["SECTION", "SECTION", "Creates a 2D cross-section from 3D", "draw"], ["SECTIONPLANE", "SECTIONPLANE", "Creates a section plane object", "draw"], ["INTERFERE", "INTERFERE", "Checks 3D solid interference", "draw"], ["INTERSECT", "INTERSECT", "Creates solid from overlapping volumes", "draw"], ["SUBTRACT", "SUBTRACT", "Subtracts one solid from another", "draw"], ["UNION", "UNION", "Joins solids into one", "draw"], ["SLICE", "SLICE", "Cuts a solid with a plane", "draw"], ["IMPRINT", "IMPRINT", "Imprints an edge on a solid", "draw"], ["SHELL", "SHELL", "Hollows a solid with a wall thickness", "draw"], ["FILLETEDGE", "FILLETEDGE", "Rounds edges of a 3D solid", "draw"], ["CHAMFEREDGE", "CHAMFEREDGE", "Bevels edges of a 3D solid", "draw"], ["COPYEDGE", "COPYEDGE", "Copies a 3D solid edge", "draw"], ["OFFSETEDGE", "OFFSETEDGE", "Offsets a 3D solid edge", "draw"], ["SOLIDEDIT", "SOLIDEDIT", "Edits faces, edges, bodies of solids", "draw"], ["CO", "COPY", "Copies objects to a new location", "modify"], ["M", "MOVE", "Moves objects to a new location", "modify"], ["E", "ERASE", "Deletes selected objects", "modify"], ["TR", "TRIM", "Trims objects at cutting edges", "modify"], ["EX", "EXTEND", "Extends objects to meet boundaries", "modify"], ["MI", "MIRROR", "Creates a mirrored copy of objects", "modify"], ["O", "OFFSET", "Creates parallel copies at a set distance", "modify"], ["F", "FILLET", "Rounds corners with an arc", "modify"], ["CHA", "CHAMFER", "Bevels corners with a straight cut", "modify"], ["BR", "BREAK", "Breaks an object into two parts", "modify"], ["J", "JOIN", "Joins similar objects into one", "modify"], ["X", "EXPLODE", "Breaks compound objects into parts", "modify"], ["SC", "SCALE", "Resizes objects uniformly", "modify"], ["S", "STRETCH", "Stretches objects by moving endpoints", "modify"], ["RO", "ROTATE", "Rotates objects around a base point", "modify"], ["AR", "ARRAY", "Creates rectangular or polar copies", "modify"], ["LEN", "LENGTHEN", "Changes the length of open objects", "modify"], ["DIV", "DIVIDE", "Divides an object into equal segments", "modify"], ["ME", "MEASURE", "Measures and places points at intervals", "modify"], ["PEDIT", "PEDIT", "Edits polylines and 3D meshes", "modify"], ["SPLINEDIT", "SPLINEDIT", "Edits spline objects", "modify"], ["MLEDIT", "MLEDIT", "Edits multileader objects", "modify"], ["CHPROP", "CHPROP", "Changes object properties", "modify"], ["MATCHPROP", "MATCHPROP", "Copies properties from one object to others", "modify"], ["PROPERTIES", "PROPERTIES", "Opens the Properties palette", "modify"], ["TEXTTOFRONT", "TEXTTOFRONT", "Brings text and dimensions to front", "modify"], ["OVERKILL", "OVERKILL", "Removes duplicate or overlapping geometry", "modify"], ["AUDIT", "AUDIT", "Checks and repairs drawing errors", "modify"], ["RECOVER", "RECOVER", "Repairs a corrupted drawing file", "modify"], ["PURGE", "PURGE", "Removes unused named objects", "modify"], ["RENAME", "RENAME", "Renames blocks, layers, styles, etc.", "modify"], ["GROUP", "GROUP", "Creates a named group of objects", "modify"], ["UNGROUP", "UNGROUP", "Dissolves a group", "modify"], ["ORDER", "DRAWORDER", "Changes draw order of objects", "modify"], ["REVERSE", "REVERSE", "Reverses the direction of an object", "modify"], ["FLATTEN", "FLATTEN", "Projects 3D geometry to 2D plane", "modify"], ["THICKEN", "THICKEN", "Converts surfaces to 3D solids", "modify"], ["CONVTOSOLID", "CONVTOSOLID", "Converts objects to 3D solids", "modify"], ["CONVTOSURFACE", "CONVTOSURFACE", "Converts objects to surfaces", "modify"], ["CONVTOMESH", "CONVTOMESH", "Converts objects to mesh", "modify"], ["SMOOTHMESH", "SMOOTHMESH", "Increases mesh smoothness", "modify"], ["CREASE", "CREASE", "Adds a crease to a mesh", "modify"], ["SPLITMESH", "SPLITMESH", "Splits a mesh face", "modify"], ["STRETCH", "STRETCH", "Stretches objects by moving endpoints", "modify"], ["ROTATE3D", "ROTATE3D", "Rotates around a 3D axis", "modify"], ["3DMIRROR", "3DMIRROR", "Mirrors across a 3D plane", "modify"], ["3DARRAY", "3DARRAY", "Creates 3D rectangular or polar arrays", "modify"], ["3DROTATE", "3DROTATE", "Rotates objects in 3D space", "modify"], ["3DSCALE", "3DSCALE", "Scales objects in 3D", "modify"], ["3DMOVE", "3DMOVE", "Moves objects in 3D", "modify"], ["3DORBIT", "3DORBIT", "Free 3D orbit navigation", "modify"], ["3DCORBIT", "3DCORBIT", "Continuous 3D orbit", "modify"], ["3DDISTANCE", "3DDISTANCE", "Adjusts 3D view distance", "modify"], ["3DPAN", "3DPAN", "Pans in 3D view", "modify"], ["3DZOOM", "3DZOOM", "Zooms in 3D view", "modify"], ["3DSWIVEL", "3DSWIVEL", "Swivels the 3D view", "modify"], ["3DCLIP", "3DCLIP", "Activates 3D clipping plane", "modify"], ["SECTION", "SECTION", "Creates a 2D cross-section from 3D", "modify"], ["SECTIONPLANE", "SECTIONPLANE", "Creates a section plane object", "modify"], ["INTERFERE", "INTERFERE", "Checks 3D solid interference", "modify"], ["INTERSECT", "INTERSECT", "Creates solid from overlapping volumes", "modify"], ["SUBTRACT", "SUBTRACT", "Subtracts one solid from another", "modify"], ["UNION", "UNION", "Joins solids into one", "modify"], ["SLICE", "SLICE", "Cuts a solid with a plane", "modify"], ["IMPRINT", "IMPRINT", "Imprints an edge on a solid", "modify"], ["SHELL", "SHELL", "Hollows a solid with a wall thickness", "modify"], ["FILLETEDGE", "FILLETEDGE", "Rounds edges of a 3D solid", "modify"], ["CHAMFEREDGE", "CHAMFEREDGE", "Bevels edges of a 3D solid", "modify"], ["COPYEDGE", "COPYEDGE", "Copies a 3D solid edge", "modify"], ["OFFSETEDGE", "OFFSETEDGE", "Offsets a 3D solid edge", "modify"], ["SOLIDEDIT", "SOLIDEDIT", "Edits faces, edges, bodies of solids", "modify"], ["D", "DIMSTYLE", "Creates or modifies dimension styles", "annotation"], ["DIM", "DIMLINEAR", "Creates a linear dimension", "annotation"], ["DAL", "DIMALIGNED", "Creates an aligned dimension", "annotation"], ["DAN", "DIMANGULAR", "Creates an angular dimension", "annotation"], ["DOR", "DIMORDINATE", "Creates ordinate (X/Y) dimensions", "annotation"], ["DRA", "DIMRADIUS", "Creates a radius dimension", "annotation"], ["DDI", "DIMDIAMETER", "Creates a diameter dimension", "annotation"], ["DCE", "DIMCENTER", "Creates center marks for circles/arcs", "annotation"], ["DCO", "DIMCONTINUE", "Creates a chain of continued dimensions", "annotation"], ["DBA", "DIMBASELINE", "Creates baseline dimensions", "annotation"], ["DED", "DIMEDIT", "Edits dimension text and extension lines", "annotation"], ["DIMTEDIT", "DIMTEDIT", "Moves and rotates dimension text", "annotation"], ["DIMREASSOCIATE", "DIMREASSOCIATE", "Reassociates dimensions to geometry", "annotation"], ["DIMREGEN", "DIMREGEN", "Regenerates all dimensions", "annotation"], ["DIMBREAK", "DIMBREAK", "Adds breaks in dimension lines", "annotation"], ["DIMSPACE", "DIMSPACE", "Spaces dimensions evenly", "annotation"], ["DIMJOGLINE", "DIMJOGLINE", "Adds a jog to a radius dimension", "annotation"], ["DIMINSPECT", "DIMINSPECT", "Adds inspection labels to dimensions", "annotation"], ["DIMCONSTRAINT", "DIMCONSTRAINT", "Applies dimensional constraints", "annotation"], ["DIMUPDATE", "DIMUPDATE", "Updates dimensions to current style", "annotation"], ["MLEADER", "MLEADER", "Creates a multileader object", "annotation"], ["MLEADEREDIT", "MLEADEREDIT", "Edits multileader content", "annotation"], ["MLEADERALIGN", "MLEADERALIGN", "Aligns multileaders", "annotation"], ["MLEADERCOLLECT", "MLEADERCOLLECT", "Collects multileaders into one", "annotation"], ["QLEADER", "QLEADER", "Quick leader with preset annotation", "annotation"], ["LEADER", "LEADER", "Creates a straight leader with annotation", "annotation"], ["MLEADERSTYLE", "MLEADERSTYLE", "Creates multileader styles", "annotation"], ["T", "MTEXT", "Creates multiline text (alias of MT)", "annotation"], ["ST", "STYLE", "Creates or modifies text styles", "annotation"], ["FIND", "FIND", "Finds and replaces text", "annotation"], ["SPELL", "SPELL", "Checks spelling in text", "annotation"], ["SCALETEXT", "SCALETEXT", "Scales text objects", "annotation"], ["JUSTIFYTEXT", "JUSTIFYTEXT", "Changes text justification", "annotation"], ["SPACETRANS", "SPACETRANS", "Converts between model and paper space", "annotation"], ["TEXTFIT", "TEXTFIT", "Fits text within a boundary", "annotation"], ["TEXTMASK", "TEXTMASK", "Masks text background", "annotation"], ["TEXTUNMASK", "TEXTUNMASK", "Removes text mask", "annotation"], ["TEXTTOFRONT", "TEXTTOFRONT", "Brings text to front of draw order", "annotation"], ["ARCTEXT", "ARCTEXT", "Places text along an arc", "annotation"], ["RTEXT", "RTEXT", "Creates remote text (field-based)", "annotation"], ["FIELD", "FIELD", "Inserts a field (dynamic text)", "annotation"], ["UPDATEFIELD", "UPDATEFIELD", "Updates all fields in a selection", "annotation"], ["MTEXTEDIT", "MTEXTEDIT", "Edits multiline text in place", "annotation"], ["DDEDIT", "DDEDIT", "Edits text and attribute definitions", "annotation"], ["ATTEDIT", "ATTEDIT", "Edits attribute values in blocks", "annotation"], ["EATTEDIT", "EATTEDIT", "Edits block attributes enhanced", "annotation"], ["BATTMAN", "BATTMAN", "Block attribute manager", "annotation"], ["ATTSYNC", "ATTSYNC", "Syncs attribute definitions", "annotation"], ["ATTEXT", "ATTEXT", "Extracts attribute data to a table", "annotation"], ["ATTDEF", "ATTDEF", "Defines an attribute for a block", "annotation"], ["ATTREQ", "ATTREQ", "Sets attribute requirements", "annotation"], ["ATTDIALOG", "ATTDIALOG", "Attribute dialog (legacy)", "annotation"], ["ATTIPEDIT", "ATTIPEDIT", "Edits attribute in place", "annotation"], ["ATTORDER", "ATTORDER", "Changes attribute order", "annotation"], ["ATTREDEF", "ATTREDEF", "Redefines a block and updates attributes", "annotation"], ["ATTTRANSFER", "ATTTRANSFER", "Transfers attributes between blocks", "annotation"], ["ATTUPDATE", "ATTUPDATE", "Updates attribute values", "annotation"], ["ATTEXPORT", "ATTEXPORT", "Exports attributes to a file", "annotation"], ["ATTIMPORT", "ATTIMPORT", "Imports attributes from a file", "annotation"], ["ATTSEARCH", "ATTSEARCH", "Searches for attribute values", "annotation"], ["ATTSELECT", "ATTSELECT", "Selects attributes by criteria", "annotation"], ["ATTGROUP", "ATTGROUP", "Groups attributes", "annotation"], ["ATTUNGROUP", "ATTUNGROUP", "Ungroups attributes", "annotation"], ["ATTLOCK", "ATTLOCK", "Locks attribute positions", "annotation"], ["ATTUNLOCK", "ATTUNLOCK", "Unlocks attribute positions", "annotation"], ["ATTVISIBLE", "ATTVISIBLE", "Toggles attribute visibility", "annotation"], ["ATTHIDE", "ATTHIDE", "Hides attributes", "annotation"], ["ATTSHOW", "ATTSHOW", "Shows hidden attributes", "annotation"], ["ATTRENAME", "ATTRENAME", "Renames attributes", "annotation"], ["ATTDELETE", "ATTDELETE", "Deletes attributes", "annotation"], ["ATTADD", "ATTADD", "Adds attributes to a block", "annotation"], ["ATTREMOVE", "ATTREMOVE", "Removes attributes from a block", "annotation"], ["ATTINSERT", "ATTINSERT", "Inserts attributes into a block", "annotation"], ["ATTAPPEND", "ATTAPPEND", "Appends attributes to a block", "annotation"], ["ATTPREPEND", "ATTPREPEND", "Prepends attributes to a block", "annotation"], ["ATTREPLACE", "ATTREPLACE", "Replaces attribute values", "annotation"], ["LA", "LAYER", "Opens the Layer Properties Manager", "layers"], ["LAYOFF", "LAYOFF", "Turns off layers of selected objects", "layers"], ["LAYON", "LAYON", "Turns on all layers", "layers"], ["LAYISO", "LAYISO", "Isolates layers of selected objects", "layers"], ["LAYUNISO", "LAYUNISO", "Unisolates previously isolated layers", "layers"], ["LAYFRZ", "LAYFRZ", "Freezes layers of selected objects", "layers"], ["LAYTHW", "LAYTHW", "Thaws all layers", "layers"], ["LAYLCK", "LAYLCK", "Locks layers of selected objects", "layers"], ["LAYULK", "LAYULK", "Unlocks layers of selected objects", "layers"], ["LAYMRG", "LAYMRG", "Merges layers into a destination layer", "layers"], ["LAYDEL", "LAYDEL", "Deletes unused layers", "layers"], ["LAYWALK", "LAYWALK", "Dynamically browses layer contents", "layers"], ["LAYMCH", "LAYMCH", "Matches layer of selected objects", "layers"], ["LAYCUR", "LAYCUR", "Sets layer of selected objects to current", "layers"], ["LAYMCUR", "LAYMCUR", "Sets current layer to match selected object", "layers"], ["LAYTHRU", "LAYTHRU", "Makes all layers thawed", "layers"], ["LAYVPI", "LAYVPI", "Isolates layers in a viewport", "layers"], ["LAYVPO", "LAYVPO", "Unisolates layers in a viewport", "layers"], ["LAYVPCUR", "LAYVPCUR", "Sets current layer in a viewport", "layers"], ["LAYVPMCH", "LAYVPMCH", "Matches layer in a viewport", "layers"], ["LAYVPOFF", "LAYVPOFF", "Turns off layers in a viewport", "layers"], ["LAYVPON", "LAYVPON", "Turns on layers in a viewport", "layers"], ["LAYVPFRZ", "LAYVPFRZ", "Freezes layers in a viewport", "layers"], ["LAYVPTHW", "LAYVPTHW", "Thaws layers in a viewport", "layers"], ["LAYVPLCK", "LAYVPLCK", "Locks layers in a viewport", "layers"], ["LAYVPULK", "LAYVPULK", "Unlocks layers in a viewport", "layers"], ["LAYVPMRG", "LAYVPMRG", "Merges layers in a viewport", "layers"], ["LAYVPDEL", "LAYVPDEL", "Deletes layers in a viewport", "layers"], ["LAYVPWALK", "LAYVPWALK", "Browses layers in a viewport", "layers"], ["Z", "ZOOM", "Changes the magnification of the view", "view"], ["P", "PAN", "Moves the view without changing scale", "view"], ["Z+W", "ZOOM WINDOW", "Zooms to a windowed area", "view"], ["Z+P", "ZOOM PREVIOUS", "Returns to the previous view", "view"], ["Z+E", "ZOOM EXTENTS", "Zooms to show all objects", "view"], ["Z+A", "ZOOM ALL", "Zooms to drawing limits", "view"], ["Z+S", "ZOOM SCALE", "Zooms by a scale factor", "view"], ["Z+C", "ZOOM CENTER", "Zooms to a center point", "view"], ["Z+D", "ZOOM DYNAMIC", "Dynamic zoom with view box", "view"], ["Z+O", "ZOOM OBJECT", "Zooms to selected objects", "view"], ["Z+T", "ZOOM TRANSPARENT", "Zooms while another command runs", "view"], ["Z+V", "ZOOM VECTOR", "Zooms with vector graphics", "view"], ["Z+X", "ZOOM EXPRESS", "Zoom express tools", "view"], ["Z+2X", "ZOOM 2X", "Doubles the magnification", "view"], ["Z+0.5X", "ZOOM 0.5X", "Halves the magnification", "view"], ["3DO", "3DORBIT", "Free orbit in 3D view", "view"], ["3DC", "3DCORBIT", "Continuous 3D orbit", "view"], ["3DD", "3DDISTANCE", "Adjusts 3D viewing distance", "view"], ["3DP", "3DPAN", "Pans in 3D view", "view"], ["3DZ", "3DZOOM", "Zooms in 3D view", "view"], ["3DS", "3DSWIVEL", "Swivels the 3D view", "view"], ["3DCL", "3DCLIP", "Activates 3D clipping plane", "view"], ["V", "VIEW", "Opens the View Manager", "view"], ["VP", "VPORTS", "Creates viewports in paper space", "view"], ["MV", "MVIEW", "Creates and controls viewports", "view"], ["MVSETUP", "MVSETUP", "Sets up viewports for plotting", "view"], ["VPOINT", "VPOINT", "Sets the 3D viewing direction", "view"], ["PLAN", "PLAN", "Returns to a plan view of UCS", "view"], ["UCS", "UCS", "Manages the User Coordinate System", "view"], ["UCSICON", "UCSICON", "Toggles the UCS icon display", "view"], ["UCSMAN", "UCSMAN", "UCS Manager dialog", "view"], ["WORLD", "WORLD", "Sets UCS to World", "view"], ["OBJECT", "OBJECT", "Sets UCS to selected object", "view"], ["FACE", "FACE", "Sets UCS to selected face", "view"], ["VIEW", "VIEW", "Named views manager (alias of V)", "view"], ["VIEWRES", "VIEWRES", "Sets resolution for curved objects", "view"], ["REGEN", "REGEN", "Regenerates the drawing display", "view"], ["REGENALL", "REGENALL", "Regenerates all viewports", "view"], ["REDRAW", "REDRAW", "Refreshes the current view", "view"], ["REDRAWALL", "REDRAWALL", "Refreshes all viewports", "view"], ["RENDER", "RENDER", "Renders a 3D scene", "view"], ["SHADEMODE", "SHADEMODE", "Sets visual style shading", "view"], ["VISUALSTYLES", "VISUALSTYLES", "Visual styles manager", "view"], ["HIDE", "HIDE", "Regenerates without hidden lines", "view"], ["ISOLATE", "ISOLATE", "Hides unselected objects", "view"], ["UNISOLATE", "UNISOLATE", "Shows previously hidden objects", "view"], ["DIM", "DIMLINEAR", "Creates a linear dimension", "dimension"], ["DAL", "DIMALIGNED", "Creates an aligned dimension", "dimension"], ["DAN", "DIMANGULAR", "Creates an angular dimension", "dimension"], ["DOR", "DIMORDINATE", "Creates ordinate dimensions", "dimension"], ["DRA", "DIMRADIUS", "Creates a radius dimension", "dimension"], ["DDI", "DIMDIAMETER", "Creates a diameter dimension", "dimension"], ["DCE", "DIMCENTER", "Creates center marks", "dimension"], ["DCO", "DIMCONTINUE", "Creates continued dimensions", "dimension"], ["DBA", "DIMBASELINE", "Creates baseline dimensions", "dimension"], ["DED", "DIMEDIT", "Edits dimension text and lines", "dimension"], ["DIMTEDIT", "DIMTEDIT", "Moves and rotates dimension text", "dimension"], ["DIMREASSOCIATE", "DIMREASSOCIATE", "Reassociates dimensions", "dimension"], ["DIMREGEN", "DIMREGEN", "Regenerates all dimensions", "dimension"], ["DIMBREAK", "DIMBREAK", "Adds breaks in dimension lines", "dimension"], ["DIMSPACE", "DIMSPACE", "Spaces dimensions evenly", "dimension"], ["DIMJOGLINE", "DIMJOGLINE", "Adds jog to radius dimension", "dimension"], ["DIMINSPECT", "DIMINSPECT", "Adds inspection labels", "dimension"], ["DIMCONSTRAINT", "DIMCONSTRAINT", "Applies dimensional constraints", "dimension"], ["DIMUPDATE", "DIMUPDATE", "Updates dimensions to style", "dimension"], ["DIMSTYLE", "DIMSTYLE", "Dimension style manager", "dimension"], ["DIMOVERRIDE", "DIMOVERRIDE", "Overrides dimension variables", "dimension"], ["DIMASSOC", "DIMASSOC", "Associates dimensions to geometry", "dimension"], ["DIMDISASSOCIATE", "DIMDISASSOCIATE", "Disassociates dimensions", "dimension"], ["B", "BLOCK", "Creates a block definition", "block"], ["I", "INSERT", "Inserts a block or drawing", "block"], ["W", "WBLOCK", "Writes a block to a new drawing file", "block"], ["ATT", "ATTDEF", "Defines an attribute for a block", "block"], ["EATTEDIT", "EATTEDIT", "Edits block attributes", "block"], ["BEDIT", "BEDIT", "Edits a block definition in place", "block"], ["REFEDIT", "REFEDIT", "Edits a block reference in place", "block"], ["CLIPBASE", "CLIPBASE", "Sets the base point for clipping", "block"], ["XCLIP", "XCLIP", "Clips a block or reference to a boundary", "block"], ["NCOPY", "NCOPY", "Copies nested objects from a block", "block"], ["GATTE", "GATTE", "Global attribute edit", "block"], ["BATTMAN", "BATTMAN", "Block attribute manager", "block"], ["ATTSYNC", "ATTSYNC", "Syncs attribute definitions", "block"], ["ATTEXT", "ATTEXT", "Extracts attribute data", "block"], ["ATTREQ", "ATTREQ", "Sets attribute requirements", "block"], ["ATTDIALOG", "ATTDIALOG", "Attribute dialog (legacy)", "block"], ["ATTIPEDIT", "ATTIPEDIT", "Edits attribute in place", "block"], ["ATTORDER", "ATTORDER", "Changes attribute order", "block"], ["ATTREDEF", "ATTREDEF", "Redefines a block", "block"], ["ATTTRANSFER", "ATTTRANSFER", "Transfers attributes", "block"], ["ATTUPDATE", "ATTUPDATE", "Updates attribute values", "block"], ["ATTEXPORT", "ATTEXPORT", "Exports attributes", "block"], ["ATTIMPORT", "ATTIMPORT", "Imports attributes", "block"], ["ATTSEARCH", "ATTSEARCH", "Searches attributes", "block"], ["ATTSELECT", "ATTSELECT", "Selects attributes", "block"], ["ATTGROUP", "ATTGROUP", "Groups attributes", "block"], ["ATTUNGROUP", "ATTUNGROUP", "Ungroups attributes", "block"], ["ATTLOCK", "ATTLOCK", "Locks attribute positions", "block"], ["ATTUNLOCK", "ATTUNLOCK", "Unlocks attribute positions", "block"], ["ATTVISIBLE", "ATTVISIBLE", "Toggles attribute visibility", "block"], ["ATTHIDE", "ATTHIDE", "Hides attributes", "block"], ["ATTSHOW", "ATTSHOW", "Shows hidden attributes", "block"], ["ATTRENAME", "ATTRENAME", "Renames attributes", "block"], ["ATTDELETE", "ATTDELETE", "Deletes attributes", "block"], ["ATTADD", "ATTADD", "Adds attributes to a block", "block"], ["ATTREMOVE", "ATTREMOVE", "Removes attributes from a block", "block"], ["ATTINSERT", "ATTINSERT", "Inserts attributes into a block", "block"], ["ATTAPPEND", "ATTAPPEND", "Appends attributes to a block", "block"], ["ATTPREPEND", "ATTPREPEND", "Prepends attributes to a block", "block"], ["ATTREPLACE", "ATTREPLACE", "Replaces attribute values", "block"], ["Ctrl+S", "QSAVE", "Quick save the current drawing", "misc"], ["Ctrl+Z", "UNDO", "Reverses the last action", "misc"], ["Ctrl+Y", "REDO", "Reapplies the last undone action", "misc"], ["Ctrl+C", "COPYCLIP", "Copies objects to the clipboard", "misc"], ["Ctrl+V", "PASTECLIP", "Pastes clipboard content", "misc"], ["Ctrl+X", "CUTCLIP", "Cuts objects to the clipboard", "misc"], ["Ctrl+N", "NEW", "Creates a new drawing", "misc"], ["Ctrl+O", "OPEN", "Opens an existing drawing", "misc"], ["Ctrl+P", "PLOT", "Plots the drawing to a printer or file", "misc"], ["Ctrl+Q", "QUIT", "Exits AutoCAD", "misc"], ["Ctrl+A", "SELECTALL", "Selects all objects in the drawing", "misc"], ["Ctrl+F", "FIND", "Finds and replaces text", "misc"], ["Ctrl+G", "GRID", "Toggles the grid display", "misc"], ["Ctrl+L", "ORTHO", "Toggles ortho mode (constrained movement)", "misc"], ["Ctrl+E", "ISOPLANE", "Cycles isometric planes", "misc"], ["Ctrl+D", "DYN", "Toggles dynamic input", "misc"], ["Ctrl+B", "SNAP", "Toggles snap mode", "misc"], ["Ctrl+U", "POLAR", "Toggles polar tracking", "misc"], ["Ctrl+T", "TABLET", "Toggles tablet mode", "misc"], ["Ctrl+M", "REPEAT", "Repeats the last command", "misc"], ["Ctrl+J", "REPEAT", "Repeats the last command (alias)", "misc"], ["Ctrl+K", "HYPERLINK", "Inserts or edits a hyperlink", "misc"], ["Ctrl+1", "PROPERTIES", "Opens the Properties palette", "misc"], ["Ctrl+2", "ADCENTER", "Opens the DesignCenter palette", "misc"], ["Ctrl+3", "TOOLPALETTES", "Opens the Tool Palettes window", "misc"], ["Ctrl+4", "SHEETSET", "Opens the Sheet Set Manager", "misc"], ["Ctrl+5", "OPTIONS", "Opens the Options dialog", "misc"], ["Ctrl+6", "DBCONNECT", "Opens the database connection manager", "misc"], ["Ctrl+7", "MARKUP", "Opens the markup set manager", "misc"], ["Ctrl+8", "QUICKCALC", "Opens the QuickCalc calculator", "misc"], ["Ctrl+9", "COMMANDLINE", "Toggles the command line window", "misc"], ["Ctrl+0", "CLEANSCREEN", "Toggles clean screen mode", "misc"], ["F1", "HELP", "Opens AutoCAD Help", "misc"], ["F2", "TEXTSWITCH", "Toggles the text window", "misc"], ["F3", "OSNAP", "Toggles object snap", "misc"], ["F4", "3DOSNAP", "Toggles 3D object snap", "misc"], ["F5", "ISOPLANE", "Cycles isometric planes", "misc"], ["F6", "UCSDETECT", "Toggles UCS detection", "misc"], ["F7", "GRID", "Toggles grid display", "misc"], ["F8", "ORTHO", "Toggles ortho mode", "misc"], ["F9", "SNAP", "Toggles snap mode", "misc"], ["F10", "POLAR", "Toggles polar tracking", "misc"], ["F11", "OTRACK", "Toggles object snap tracking", "misc"], ["F12", "DYN", "Toggles dynamic input", "misc"]];
-const CATS = [["draw", "Draw", "\u270f\ufe0f"], ["modify", "Modify", "\ud83d\udd27"], ["annotation", "Annotation", "\ud83d\udcdd"], ["layers", "Layers", "\ud83d\udcd1"], ["view", "View", "\ud83d\udd0d"], ["dimension", "Dimension", "\ud83d\udccf"], ["block", "Block", "\ud83e\uddf1"], ["misc", "Misc", "\u2328\ufe0f"]];
-const CATEGORY_VIDEOS = {"draw": "https://www.youtube.com/embed/_E-nNSU-3Fc", "modify": "https://www.youtube.com/embed/NyUy7b8nRo4", "annotation": "https://www.youtube.com/embed/1ozuLfc7DYc", "layers": "https://www.youtube.com/embed/-VUc6ZbNQjM", "view": "https://www.youtube.com/embed/uvhMS2Du4Y8", "dimension": "https://www.youtube.com/embed/-W-GrJj3bmA", "block": "https://www.youtube.com/embed/534VXBvul7U", "misc": "https://www.youtube.com/embed/so-5nrRT6nE"};
+// ─── Curated Video Database ─────────────────────────────────────
+const FALLBACK_VIDEO = {
+  videoId: '-U5koWtCmeE',
+  start: 15,
+  end: 40,
+  title: 'AutoCAD Full Tutorial for Beginners'
+};
 
-const sectionsEl = document.getElementById('sections');
+const VIDEO_DB = {
+  LINE:        { videoId: 'Fof4nfdGLtQ', start: 20, end: 40 },
+  CIRCLE:      { videoId: 'ez-iani6OxA', start: 35, end: 55 },
+  ARC:         { videoId: 'BXnUxnTQ7BQ', start: 25, end: 48 },
+  POLYLINE:    { videoId: 'ez-iani6OxA', start: 10, end: 30 },
+  PLINE:       { videoId: 'ez-iani6OxA', start: 10, end: 30 },
+  RECTANGLE:   { videoId: 'ez-iani6OxA', start: 45, end: 65 },
+  RECTANG:     { videoId: 'ez-iani6OxA', start: 45, end: 65 },
+  POLYGON:     { videoId: 'BXnUxnTQ7BQ', start: 40, end: 60 },
+  SPLINE:      { videoId: 'BXnUxnTQ7BQ', start: 50, end: 70 },
+  ELLIPSE:     { videoId: 'BXnUxnTQ7BQ', start: 55, end: 75 },
+  TRIM:        { videoId: 'l9FIJIXhzFo', start: 15, end: 35 },
+  EXTEND:      { videoId: 'ez-iani6OxA', start: 55, end: 75 },
+  MOVE:        { videoId: '3mj9favy-EA', start: 45, end: 65 },
+  COPY:        { videoId: '3mj9favy-EA', start: 60, end: 80 },
+  ROTATE:      { videoId: '3mj9favy-EA', start: 80, end: 100 },
+  SCALE:       { videoId: '3mj9favy-EA', start: 95, end: 115 },
+  MIRROR:      { videoId: 'ZXQeaECI3OY', start: 20, end: 40 },
+  OFFSET:      { videoId: '_LQukynu-Do', start: 20, end: 40 },
+  FILLET:      { videoId: 'wftBHAkENnY', start: 15, end: 35 },
+  CHAMFER:     { videoId: 'wftBHAkENnY', start: 30, end: 50 },
+  ARRAY:       { videoId: 'ZXQeaECI3OY', start: 60, end: 80 },
+  STRETCH:     { videoId: '8bRe68wa-Ho', start: 5,  end: 25 },
+  BREAK:       { videoId: 'XE6aoO6drcg', start: 15, end: 35 },
+  EXPLODE:     { videoId: 'THFbjtzkFWI', start: 5,  end: 25 },
+  JOIN:        { videoId: 'THFbjtzkFWI', start: 15, end: 35 },
+  PEDIT:       { videoId: '2qs5X5spacA', start: 5,  end: 25 },
+  HATCH:       { videoId: 'BXnUxnTQ7BQ', start: 70, end: 90 },
+  HATCHEDIT:   { videoId: 'ERw3xkYa1aE', start: 5,  end: 25 },
+  GRADIENT:    { videoId: 'BXnUxnTQ7BQ', start: 75, end: 95 },
+  BOUNDARY:    { videoId: 'Yw6Q4_XVcds', start: 5,  end: 25 },
+  REGION:      { videoId: 'I2DDjvJS20I', start: 5,  end: 25 },
+  TEXT:        { videoId: 'Wt8wCFl5T70', start: 15, end: 35 },
+  MTEXT:       { videoId: 'qV9aSt3bR-o', start: 20, end: 40 },
+  DTEXT:       { videoId: 'Wt8wCFl5T70', start: 20, end: 40 },
+  DIMLINEAR:   { videoId: 'qV9aSt3bR-o', start: 45, end: 65 },
+  DIM:         { videoId: 'qV9aSt3bR-o', start: 45, end: 65 },
+  DIMALIGNED:  { videoId: 'qV9aSt3bR-o', start: 50, end: 70 },
+  DIMRADIUS:   { videoId: 'qV9aSt3bR-o', start: 55, end: 75 },
+  DIMDIAMETER: { videoId: 'qV9aSt3bR-o', start: 58, end: 78 },
+  DIMANGULAR:  { videoId: 'qV9aSt3bR-o', start: 62, end: 82 },
+  QLEADER:     { videoId: 'Wt8wCFl5T70', start: 35, end: 55 },
+  MLEADER:     { videoId: 'qV9aSt3bR-o', start: 40, end: 60 },
+  LAYER:       { videoId: 'v5RZfZXDnho', start: 50, end: 75 },
+  LAYERSTATE:  { videoId: 'v5RZfZXDnho', start: 75, end: 95 },
+  PROPERTIES:  { videoId: 'v5RZfZXDnho', start: 30, end: 50 },
+  PROPS:       { videoId: 'v5RZfZXDnho', start: 30, end: 50 },
+  CHPROP:      { videoId: '-XhT8eBzUWA', start: 30, end: 50 },
+  MATCHPROP:   { videoId: 'v5RZfZXDnho', start: 100,end: 120 },
+  COLOR:       { videoId: '-XhT8eBzUWA', start: 25, end: 45 },
+  LINETYPE:    { videoId: '-XhT8eBzUWA', start: 45, end: 65 },
+  LTSCALE:     { videoId: '-XhT8eBzUWA', start: 55, end: 75 },
+  LINEWEIGHT:  { videoId: '-XhT8eBzUWA', start: 65, end: 85 },
+  LWEIGHT:     { videoId: '-XhT8eBzUWA', start: 65, end: 85 },
+  UNITS:       { videoId: 'BXnUxnTQ7BQ', start: 10, end: 25 },
+  UN:          { videoId: 'BXnUxnTQ7BQ', start: 10, end: 25 },
+  LIMITS:      { videoId: 'BXnUxnTQ7BQ', start: 5,  end: 20 },
+  ZOOM:        { videoId: 'FzNOrOHwpaU', start: 15, end: 35 },
+  PAN:         { videoId: 'FzNOrOHwpaU', start: 30, end: 50 },
+  UCS:         { videoId: 'ghrvX913LAw', start: 20, end: 40 },
+  VPOINT:      { videoId: 'ghrvX913LAw', start: 35, end: 55 },
+  VIEW:        { videoId: 'ghrvX913LAw', start: 25, end: 45 },
+  VPORTS:      { videoId: 'ghrvX913LAw', start: 40, end: 60 },
+  INSERT:      { videoId: 'HVDpTqUub2Y', start: 30, end: 50 },
+  BLOCK:       { videoId: 'HVDpTqUub2Y', start: 15, end: 35 },
+  WBLOCK:      { videoId: 'HVDpTqUub2Y', start: 55, end: 75 },
+  XREF:        { videoId: 'HVDpTqUub2Y', start: 65, end: 85 },
+  XATTACH:     { videoId: 'HVDpTqUub2Y', start: 68, end: 88 },
+  PURGE:       { videoId: '3mj9favy-EA', start: 5,  end: 20 },
+  AUDIT:       { videoId: '3mj9favy-EA', start: 10, end: 25 },
+  RECOVER:     { videoId: '-U5koWtCmeE', start: 20, end: 35 },
+  UNDO:        { videoId: '-U5koWtCmeE', start: 30, end: 42 },
+  REDO:        { videoId: '-U5koWtCmeE', start: 35, end: 47 },
+  ERASE:       { videoId: '3mj9favy-EA', start: 20, end: 35 },
+  SELECT:      { videoId: '-U5koWtCmeE', start: 25, end: 38 },
+  OSNAP:       { videoId: 'tNFXAomnJ4Q', start: 10, end: 30 },
+  ORTHO:       { videoId: 'tNFXAomnJ4Q', start: 30, end: 48 },
+  GRID:        { videoId: 'tNFXAomnJ4Q', start: 5,  end: 20 },
+  SNAP:        { videoId: 'ABOZmgQ8FRQ', start: 15, end: 35 },
+  DSETTINGS:   { videoId: 'ABOZmgQ8FRQ', start: 20, end: 40 },
+  MEASURE:     { videoId: 'I2DDjvJS20I', start: 10, end: 28 },
+  MEASUREGEOM: { videoId: 'I2DDjvJS20I', start: 12, end: 30 },
+  DIST:        { videoId: 'I2DDjvJS20I', start: 18, end: 35 },
+  AREA:        { videoId: 'I2DDjvJS20I', start: 22, end: 40 },
+  LIST:        { videoId: '-U5koWtCmeE', start: 40, end: 52 },
+  ID:          { videoId: '-U5koWtCmeE', start: 42, end: 54 },
+  STATUS:      { videoId: '-U5koWtCmeE', start: 45, end: 55 }
+};
 
-CATS.forEach(([cid, label, ico]) => {
-  const items = HOTKEYS.filter(h => h[3] === cid);
-  let html = `
-    <section class="section" id="cat-${cid}">
-      <div class="section-head"><span class="num">${String(items.length).padStart(3,'0')} ${label.toUpperCase()}</span><h2>${label}</h2></div>
-      <div class="grid">`;
-  items.forEach(([key, cmd, desc], i) => {
-    const vidFile = CATEGORY_VIDEOS[cid] || CATEGORY_VIDEOS['draw'];
-    html += `
-        <article class="card" data-cat="${cid}" data-search="${(key+' '+cmd+' '+desc).toLowerCase()}">
-          <div class="card-top">
-            <kbd class="key">${key}</kbd>
-            <button class="copy-btn" data-copy="${key}" title="Copy hotkey" aria-label="Copy ${key}">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              <span>Copy</span>
-            </button>
-          </div>
-          <h3 class="cmd">${cmd}</h3>
-          <p class="desc">${desc}</p>
-          <div class="video-wrap">
-            <div class="video-clip video-placeholder" data-cat="${cid}" title="Video: ${label} commands">
-              <div class="vp-inner">
-                <svg viewBox="0 0 60 60" width="44" height="44" fill="none" stroke="rgba(0,229,255,.4)" stroke-width="1.5"><rect x="10" y="14" width="40" height="32" rx="4"/><polygon points="26,24 26,36 38,30" fill="rgba(0,229,255,.4)"/></svg>
-                <span class="vp-label">Video: ${label}</span>
-                <span class="vp-sub">loading...</span>
-              </div>
-            </div>
-            <iframe class="video-iframe" src="${vidFile}" title="AutoCAD ${label} tutorial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </article>`;
-  });
-  html += `
-      </div>
-    </section>`;
-  sectionsEl.innerHTML += html;
-});
+// ─── Command Database ────────────────────────────────────────────
+const COMMANDS = [
+  { key:'LINE', name:'Line', category:'Drawing', keys:'L', desc:'Draw straight line segments between specified points' },
+  { key:'CIRCLE', name:'Circle', category:'Drawing', keys:'C', desc:'Create a circle by specifying center and radius or diameter' },
+  { key:'ARC', name:'Arc', category:'Drawing', keys:'A', desc:'Draw an arc using start, center, and endpoint parameters' },
+  { key:'POLYLINE', name:'Polyline', category:'Drawing', keys:'PL', desc:'Create connected line and arc segments as one object' },
+  { key:'RECTANGLE', name:'Rectangle', category:'Drawing', keys:'REC', desc:'Draw a rectangular polyline with specified corners' },
+  { key:'POLYGON', name:'Polygon', category:'Drawing', keys:'POL', desc:'Create an equilateral closed polyline with 3-1024 sides' },
+  { key:'SPLINE', name:'Spline', category:'Drawing', keys:'SPL', desc:'Draw smooth NURBS curve fitting through specified points' },
+  { key:'ELLIPSE', name:'Ellipse', category:'Drawing', keys:'EL', desc:'Create an ellipse from center, axis length, and rotation' },
+  { key:'POINT', name:'Point', category:'Drawing', keys:'PO', desc:'Place a point object with specified style and size' },
+  { key:'MLINE', name:'Multiline', category:'Drawing', keys:'ML', desc:'Draw multiple parallel lines as a single object' },
+  { key:'XLINE', name:'Construction Line', category:'Drawing', keys:'XL', desc:'Draw infinite construction lines for alignment' },
+  { key:'RAY', name:'Ray', category:'Drawing', keys:'RAY', desc:'Create a semi-infinite line from a start point' },
+  { key:'HATCH', name:'Hatch', category:'Drawing', keys:'H', desc:'Fill enclosed areas with pattern or solid fill' },
+  { key:'GRADIENT', name:'Gradient', category:'Drawing', keys:'GD', desc:'Apply gradient color fill to bounded areas' },
+  { key:'BOUNDARY', name:'Boundary', category:'Drawing', keys:'BO', desc:'Create closed polyline or region from enclosed area' },
+  { key:'REGION', name:'Region', category:'Drawing', keys:'REG', desc:'Convert closed 2D shapes into region objects' },
+  { key:'TABLE', name:'Table', category:'Drawing', keys:'TB', desc:'Insert a data table with rows and columns' },
+  { key:'REVCLOUD', name:'Revision Cloud', category:'Drawing', keys:'REVCLOUD', desc:'Draw cloud-shaped markup around revised areas' },
+  { key:'COVERAGE', name:'Wipeout', category:'Drawing', keys:'WIPEOUT', desc:'Create blank area masking underlying geometry' },
+  { key:'HELIX', name:'Helix', category:'Drawing', keys:'HELIX', desc:'Create 2D or 3D spiral helix curve' },
 
-CATS.forEach(([cid]) => {
-  const n = HOTKEYS.filter(h => h[3] === cid).length;
-  document.querySelectorAll('.side-count[data-count="${cid}"]').forEach(el => el.textContent = n);
-});
+  { key:'MOVE', name:'Move', category:'Modifying', keys:'M', desc:'Relocate selected objects to a new position' },
+  { key:'COPY', name:'Copy', category:'Modifying', keys:'CO / CP', desc:'Duplicate selected objects at an offset' },
+  { key:'ROTATE', name:'Rotate', category:'Modifying', keys:'RO', desc:'Rotate objects around a base point by an angle' },
+  { key:'SCALE', name:'Scale', category:'Modifying', keys:'SC', desc:'Resize objects uniformly from a base point' },
+  { key:'MIRROR', name:'Mirror', category:'Modifying', keys:'MI', desc:'Create a symmetric copy across a mirror line' },
+  { key:'OFFSET', name:'Offset', category:'Modifying', keys:'O', desc:'Create parallel copies at specified distance' },
+  { key:'FILLET', name:'Fillet', category:'Modifying', keys:'F', desc:'Connect two objects with a rounded arc corner' },
+  { key:'CHAMFER', name:'Chamfer', category:'Modifying', keys:'CHA', desc:'Bevel the corner between two objects' },
+  { key:'ARRAY', name:'Array', category:'Modifying', keys:'AR', desc:'Create multiple copies in rectangular or polar pattern' },
+  { key:'STRETCH', name:'Stretch', category:'Modifying', keys:'S', desc:'Move endpoints of crossing objects' },
+  { key:'BREAK', name:'Break', category:'Modifying', keys:'BR', desc:'Split an object into two at specified points' },
+  { key:'BREAKATPOINT', name:'Break at Point', category:'Modifying', keys:'BR', desc:'Split object at a single point into two' },
+  { key:'EXPLODE', name:'Explode', category:'Modifying', keys:'X', desc:'Decompose compound objects into component parts' },
+  { key:'JOIN', name:'Join', category:'Modifying', keys:'J', desc:'Combine end-to-end objects into one continuous object' },
+  { key:'PEDIT', name:'Polyline Edit', category:'Modifying', keys:'PE', desc:'Edit polylines: width, curve, join segments' },
+  { key:'TRIM', name:'Trim', category:'Modifying', keys:'TR', desc:'Cut objects at cutting edges' },
+  { key:'EXTEND', name:'Extend', category:'Modifying', keys:'EX', desc:'Lengthen objects to meet boundary edges' },
+  { key:'LENGTHEN', name:'Lengthen', category:'Modifying', keys:'LEN', desc:'Change object length or included angle' },
+  { key:'ALIGN', name:'Align', category:'Modifying', keys:'AL', desc:'Align objects in 2D or 3D with source and target points' },
+  { key:'REVERSE', name:'Reverse', category:'Modifying', keys:'REVERSE', desc:'Reverse vertex order of lines, polylines, splines' },
 
-const searchInput = document.getElementById('searchInput');
-const filterBtns = document.querySelectorAll('.filter-btn');
-let activeFilter = 'all';
+  { key:'TEXT', name:'Single Line Text', category:'Annotation', keys:'DT', desc:'Create single-line text with specified style and height' },
+  { key:'MTEXT', name:'Multi-line Text', category:'Annotation', keys:'T / MT', desc:'Create formatted paragraph text with columns and tabs' },
+  { key:'DIMLINEAR', name:'Linear Dimension', category:'Annotation', keys:'DLI', desc:'Measure and annotate horizontal or vertical distance' },
+  { key:'DIMALIGNED', name:'Aligned Dimension', category:'Annotation', keys:'DAL', desc:'Dimension parallel to the object being measured' },
+  { key:'DIMRADIUS', name:'Radius Dimension', category:'Annotation', keys:'DRA', desc:'Annotate the radius of circles and arcs' },
+  { key:'DIMDIAMETER', name:'Diameter Dimension', category:'Annotation', keys:'DDI', desc:'Annotate the diameter of circles' },
+  { key:'DIMANGULAR', name:'Angular Dimension', category:'Annotation', keys:'DAN', desc:'Measure and display angle between objects' },
+  { key:'DIMBASELINE', name:'Baseline Dimension', category:'Annotation', keys:'DBA', desc:'Chain dimensions from a common baseline' },
+  { key:'DIMCONTINUE', name:'Continue Dimension', category:'Annotation', keys:'DCO', desc:'Chain sequential dimensions end-to-end' },
+  { key:'QLEADER', name:'Quick Leader', category:'Annotation', keys:'LE', desc:'Create leader line with annotation text' },
+  { key:'MLEADER', name:'Multileader', category:'Annotation', keys:'MLD', desc:'Create styled leader with block or text content' },
+  { key:'MTEDIT', name:'MText Edit', category:'Annotation', keys:'ED', desc:'Edit existing text or multitext content' },
+  { key:'DIMSTYLE', name:'Dimension Style', category:'Annotation', keys:'D', desc:'Create and manage dimension style overrides' },
+  { key:'TABLESTYLE', name:'Table Style', category:'Annotation', keys:'TS', desc:'Define table formatting and text styles' },
+  { key:'FIELD', name:'Field', category:'Annotation', keys:'FIELD', desc:'Insert updatable data fields in text objects' },
 
-function applyFilters() {
-  const q = searchInput.value.toLowerCase().trim();
-  let visible = 0;
-  document.querySelectorAll('.card').forEach(card => {
-    const matchQ = !q || card.dataset.search.includes(q);
-    const matchC = activeFilter === 'all' || card.dataset.cat === activeFilter;
-    const show = matchQ && matchC;
-    card.style.display = show ? '' : 'none';
-    if (show) visible++;
-  });
-  document.querySelectorAll('.section').forEach(sec => {
-    const hasVisible = sec.querySelector('.card[style=""], .card:not([style="none"])');
-    sec.style.display = hasVisible ? '' : 'none';
-  });
-  const total = HOTKEYS.length;
-  const pct = Math.round(visible / total * 100);
-  document.getElementById('progressText').textContent = `${visible}/${total} hotkeys shown`;
-  document.getElementById('progressPct').textContent = pct + '%';
-  document.getElementById('progressFill').style.width = pct + '%';
+  { key:'LAYER', name:'Layer Properties', category:'Layers', keys:'LA', desc:'Manage layers: create, delete, assign properties' },
+  { key:'LAYERSTATE', name:'Layer State', category:'Layers', keys:'LAS', desc:'Save, restore, and manage named layer configurations' },
+  { key:'LAYISO', name:'Layer Isolate', category:'Layers', keys:'LAYISO', desc:'Hide all layers except selected objects layers' },
+  { key:'LAYUNISO', name:'Layer Unisolate', category:'Layers', keys:'LAYUNISO', desc:'Restore layers hidden by LAYISO' },
+  { key:'LAYFRZ', name:'Layer Freeze', category:'Layers', keys:'LAYFRZ', desc:'Freeze layers of selected objects' },
+  { key:'LAYTHW', name:'Layer Thaw', category:'Layers', keys:'LAYTHW', desc:'Thaw all frozen layers in the drawing' },
+  { key:'LAYLCK', name:'Layer Lock', category:'Layers', keys:'LAYLCK', desc:'Lock selected objects layer to prevent edits' },
+  { key:'LAYULK', name:'Layer Unlock', category:'Layers', keys:'LAYULK', desc:'Unlock selected objects layer' },
+  { key:'LAYDEL', name:'Layer Delete', category:'Layers', keys:'LAYDEL', desc:'Delete a layer and all objects on it' },
+  { key:'LAYMCUR', name:'Make Current', category:'Layers', keys:'LAYMCUR', desc:'Set the layer of selected objects as current' },
+  { key:'LAYMCH', name:'Layer Match', category:'Layers', keys:'LAYMCH', desc:'Match layer of source to target objects' },
+  { key:'COLOR', name:'Color', category:'Layers', keys:'COL', desc:'Set the color for new objects' },
+  { key:'LINETYPE', name:'Linetype', category:'Layers', keys:'LT', desc:'Load, set, and manage line patterns' },
+  { key:'LTSCALE', name:'Linetype Scale', category:'Layers', keys:'LTS', desc:'Adjust global linetype pattern scaling' },
+  { key:'LINEWEIGHT', name:'Lineweight', category:'Layers', keys:'LW', desc:'Set line display and plotting thickness' },
+  { key:'PROPERTIES', name:'Properties', category:'Layers', keys:'PR / CH', desc:'View and edit object properties in palette' },
+
+  { key:'INSERT', name:'Insert Block', category:'Blocks', keys:'I', desc:'Place block reference or external drawing file' },
+  { key:'BLOCK', name:'Create Block', category:'Blocks', keys:'B', desc:'Define reusable block from selected objects' },
+  { key:'WBLOCK', name:'Write Block', category:'Blocks', keys:'W', desc:'Save block as external DWG file' },
+  { key:'XREF', name:'External Reference', category:'Blocks', keys:'XA', desc:'Attach external drawing as referenced overlay' },
+  { key:'XATTACH', name:'Attach Xref', category:'Blocks', keys:'XA', desc:'Attach DWG, image, or PDF as external reference' },
+  { key:'XCLIP', name:'Xref Clip', category:'Blocks', keys:'XC', desc:'Define clipping boundaries for xrefs and blocks' },
+  { key:'REFEDIT', name:'Refedit', category:'Blocks', keys:'REFEDIT', desc:'Edit block references or xrefs in-place' },
+  { key:'BEDIT', name:'Block Editor', category:'Blocks', keys:'BE', desc:'Edit block definition with specialized editor' },
+  { key:'BASE', name:'Base Point', category:'Blocks', keys:'BASE', desc:'Set insertion base point for current drawing' },
+  { key:'XPLODE', name:'Explode Enhanced', category:'Blocks', keys:'XP', desc:'Explode with enhanced property control' },
+
+  { key:'ZOOM', name:'Zoom', category:'Navigation', keys:'Z', desc:'Change magnification of the current view' },
+  { key:'PAN', name:'Pan', category:'Navigation', keys:'P', desc:'Move the view without changing magnification' },
+  { key:'UCS', name:'User Coordinate System', category:'Navigation', keys:'UCS', desc:'Define and manage custom coordinate systems' },
+  { key:'VPOINT', name:'View Point', category:'Navigation', keys:'VP', desc:'Set 3D viewing direction for the current viewport' },
+  { key:'VIEW', name:'Named Views', category:'Navigation', keys:'V', desc:'Save, restore, and manage named views' },
+  { key:'VPORTS', name:'Viewports', category:'Navigation', keys:'VP', desc:'Create and manage tiled viewport layouts' },
+  { key:'DSVIEWER', name:'Aerial View', category:'Navigation', keys:'AV', desc:'Open floating zoomed navigation window' },
+  { key:'3DORBIT', name:'3D Orbit', category:'Navigation', keys:'3DO', desc:'Interactive 3D view rotation' },
+  { key:'CAMERA', name:'Camera', category:'Navigation', keys:'CAM', desc:'Create and manage camera view definitions' },
+
+  { key:'OSNAP', name:'Object Snap', category:'Settings', keys:'F3', desc:'Toggle running object snap modes' },
+  { key:'ORTHO', name:'Ortho Mode', category:'Settings', keys:'F8', desc:'Constrain cursor to horizontal and vertical' },
+  { key:'GRID', name:'Grid Display', category:'Settings', keys:'F7', desc:'Toggle reference grid in drawing area' },
+  { key:'SNAP', name:'Snap Mode', category:'Settings', keys:'F9', desc:'Constrain cursor to specified spacing' },
+  { key:'DSETTINGS', name:'Drafting Settings', category:'Settings', keys:'DS', desc:'Configure snap, grid, polar, and osnap' },
+  { key:'OPTIONS', name:'Options', category:'Settings', keys:'OP', desc:'Customize AutoCAD application settings' },
+  { key:'UNITS', name:'Drawing Units', category:'Settings', keys:'UN', desc:'Set coordinate display format and precision' },
+  { key:'LIMITS', name:'Drawing Limits', category:'Settings', keys:'LIMITS', desc:'Set and control drawing boundary extents' },
+  { key:'QSELECT', name:'Quick Select', category:'Settings', keys:'QSELECT', desc:'Filter objects by property criteria' },
+  { key:'FILTER', name:'Object Selection Filters', category:'Settings', keys:'FILTER', desc:'Create persistent object property filters' },
+  { key:'GROUP', name:'Group', category:'Settings', keys:'G', desc:'Create named selection sets of objects' },
+  { key:'SELECTIONCYCLING', name:'Selection Cycling', category:'Settings', keys:'Ctrl+W', desc:'Cycle through overlapping objects' },
+
+  { key:'PURGE', name:'Purge', category:'Management', keys:'PU', desc:'Remove unused named objects from drawing' },
+  { key:'AUDIT', name:'Audit', category:'Management', keys:'AUDIT', desc:'Check and fix drawing data integrity' },
+  { key:'RECOVER', name:'Recover', category:'Management', keys:'RECOVER', desc:'Repair corrupted or damaged DWG files' },
+  { key:'EXPORT', name:'Export', category:'Management', keys:'EXPORT', desc:'Save drawing in various file formats' },
+  { key:'PLOT', name:'Plot', category:'Management', keys:'CTRL+P', desc:'Print or publish drawing to file or device' },
+  { key:'PREVIEW', name:'Preview', category:'Management', keys:'PREVIEW', desc:'Preview print output before sending' },
+  { key:'RENDER', name:'Render', category:'Management', keys:'RENDER', desc:'Generate photorealistic image of 3D model' },
+  { key:'MEASUREGEOM', name:'Measure Geometry', category:'Management', keys:'MEA', desc:'Measure distance, radius, angle, area, volume' },
+  { key:'DIST', name:'Distance', category:'Management', keys:'DI', desc:'Measure distance and angle between two points' },
+  { key:'AREA', name:'Area', category:'Management', keys:'AA', desc:'Calculate area and perimeter of objects' },
+  { key:'LIST', name:'List', category:'Management', keys:'LI', desc:'Display database info for selected objects' },
+  { key:'ID', name:'ID Point', category:'Management', keys:'ID', desc:'Display coordinate values of a point' },
+  { key:'STATUS', name:'Status', category:'Management', keys:'STATUS', desc:'Show drawing statistics and settings' },
+  { key:'TIME', name:'Time', category:'Management', keys:'TIME', desc:'Display drawing creation and edit time info' },
+  { key:'RENAME', name:'Rename', category:'Management', keys:'REN', desc:'Rename named objects like layers, blocks' },
+  { key:'SCALELISTEDIT', name:'Scale List', category:'Management', keys:'SCALELIST', desc:'Edit list of scales for annotative objects' }
+];
+
+// ─── Category configuration ─────────────────────────────────────
+const CATEGORIES = [
+  { id:'all', name:'All Commands', icon:'◫' },
+  { id:'Drawing', name:'Drawing', icon:'✎' },
+  { id:'Modifying', name:'Modifying', icon:'⟳' },
+  { id:'Annotation', name:'Annotation', icon:'☰' },
+  { id:'Layers', name:'Layers', icon:'☷' },
+  { id:'Blocks', name:'Blocks', icon:'▣' },
+  { id:'Navigation', name:'Navigation', icon:'⊹' },
+  { id:'Settings', name:'Settings', icon:'⚙' },
+  { id:'Management', name:'Management', icon:'☲' }
+];
+
+// ─── State ───────────────────────────────────────────────────────
+let currentCategory = 'all';
+let currentSearch = '';
+let currentCmd = null;
+
+// ─── DOM refs ────────────────────────────────────────────────────
+const $grid = document.getElementById('commandGrid');
+const $empty = document.getElementById('emptyState');
+const $search = document.getElementById('searchInput');
+const $catList = document.getElementById('categoryList');
+const $modalOverlay = document.getElementById('modalOverlay');
+const $modalVideo = document.getElementById('modalVideo');
+const $modalCmd = document.getElementById('modalCmd');
+const $modalName = document.getElementById('modalName');
+const $modalTime = document.getElementById('modalTime');
+const $modalClose = document.getElementById('modalClose');
+const $progressBar = document.getElementById('progressBar');
+const $toast = document.getElementById('toast');
+const $sectionTitle = document.getElementById('sectionTitle');
+const $sectionSubtitle = document.getElementById('sectionSubtitle');
+
+// ─── Helpers ────────────────────────────────────────────────────
+function getVideo(cmd) {
+  const entry = VIDEO_DB[cmd.key] || VIDEO_DB[cmd.key.toUpperCase()];
+  if (entry) return entry;
+  // Try alternate key aliases
+  for (const k of Object.keys(VIDEO_DB)) {
+    if (cmd.key.startsWith(k) || k.startsWith(cmd.key)) return VIDEO_DB[k];
+  }
+  return FALLBACK_VIDEO;
 }
 
-searchInput.addEventListener('input', applyFilters);
-filterBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    filterBtns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    activeFilter = btn.dataset.filter;
-    applyFilters();
+function fmtTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return m + ':' + String(sec).padStart(2, '0');
+}
+
+function thumbUrl(videoId) {
+  return 'https://img.youtube.com/vi/' + videoId + '/mqdefault.jpg';
+}
+
+function toast(msg) {
+  $toast.innerHTML = msg;
+  $toast.classList.add('show');
+  setTimeout(() => $toast.classList.remove('show'), 2000);
+}
+
+function copyText(text) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).catch(() => {});
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+}
+
+// ─── Render ─────────────────────────────────────────────────────
+function renderSidebar() {
+  $catList.innerHTML = '';
+  CATEGORIES.forEach(cat => {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.className = 'sidebar-link' + (currentCategory === cat.id ? ' active' : '');
+    const count = cat.id === 'all' ? COMMANDS.length : COMMANDS.filter(c => c.category === cat.id).length;
+    btn.innerHTML = `<span>${cat.icon}</span> ${cat.name}<span class="count">${count}</span>`;
+    btn.onclick = () => { currentCategory = cat.id; render(); };
+    li.appendChild(btn);
+    $catList.appendChild(li);
   });
+}
+
+function renderGrid() {
+  let items = COMMANDS;
+  if (currentCategory !== 'all') items = items.filter(c => c.category === currentCategory);
+  if (currentSearch) {
+    const q = currentSearch.toLowerCase();
+    items = items.filter(c =>
+      c.key.toLowerCase().includes(q) ||
+      c.name.toLowerCase().includes(q) ||
+      (c.keys || '').toLowerCase().includes(q) ||
+      (c.desc || '').toLowerCase().includes(q)
+    );
+  }
+
+  $sectionTitle.textContent = currentCategory === 'all' ? 'All Commands' : CATEGORIES.find(c => c.id === currentCategory)?.name || '';
+  $sectionSubtitle.textContent = items.length + ' command' + (items.length !== 1 ? 's' : '') + (currentSearch ? ' matching search' : '');
+
+  if (items.length === 0) {
+    $grid.style.display = 'none';
+    $empty.style.display = 'block';
+    return;
+  }
+
+  $grid.style.display = 'grid';
+  $empty.style.display = 'none';
+  $grid.innerHTML = '';
+
+  items.forEach((cmd, i) => {
+    const v = getVideo(cmd);
+    const dur = v.end - v.start;
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.animationDelay = (Math.min(i, 30) * 0.02) + 's';
+    card.innerHTML = `
+      <div class="card-thumb" data-video="${v.videoId}" data-start="${v.start}" data-end="${v.end}" data-title="${v.title || cmd.name}">
+        <img src="${thumbUrl(v.videoId)}" alt="" loading="lazy" onerror="this.style.display='none'">
+        <div class="play-overlay"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg></div>
+        <div class="clip-time">${fmtTime(dur)}s</div>
+      </div>
+      <div class="card-body">
+        <div class="card-cmd">${cmd.key}</div>
+        <div class="card-name">${cmd.name}</div>
+        <div class="card-desc">${cmd.desc}</div>
+        <div class="card-key"><span class="key-badge">${cmd.keys}</span></div>
+      </div>
+      <button class="card-copy" data-cmd="${cmd.key}" title="Copy command">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+      </button>
+    `;
+    $grid.appendChild(card);
+  });
+
+  // Bind events
+  $grid.querySelectorAll('.card-thumb').forEach(el => {
+    el.addEventListener('click', () => {
+      openModal({
+        videoId: el.dataset.video,
+        start: parseInt(el.dataset.start),
+        end: parseInt(el.dataset.end),
+        title: el.dataset.title
+      });
+    });
+  });
+
+  $grid.querySelectorAll('.card-copy').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const cmdKey = el.dataset.cmd;
+      copyText(cmdKey);
+      el.classList.add('copied');
+      toast(`Copied <span class="toast-accent">${cmdKey}</span> to clipboard`);
+      setTimeout(() => el.classList.remove('copied'), 1500);
+    });
+  });
+}
+
+function render() {
+  renderSidebar();
+  renderGrid();
+  updateProgress();
+}
+
+// ─── Modal / YouTube Player ─────────────────────────────────────
+let ytPlayer = null;
+
+function openModal(video) {
+  currentCmd = video;
+  $modalCmd.textContent = (currentSearch ? '' : (COMMANDS.find(c => getVideo(c).videoId === video.videoId)?.key || '')) + ' clip';
+  $modalName.textContent = video.title || 'Tutorial';
+  $modalTime.textContent = fmtTime(video.start) + ' – ' + fmtTime(video.end) + ' (' + (video.end - video.start) + 's)';
+  $modalOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Inject iframe
+  const vidUrl = 'https://www.youtube.com/embed/' + video.videoId +
+    '?start=' + video.start +
+    '&end=' + video.end +
+    '&autoplay=1&rel=0&modestbranding=1&enablejsapi=1';
+  $modalVideo.innerHTML = '<iframe src="' + vidUrl + '" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+}
+
+function closeModal() {
+  $modalOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+  $modalVideo.innerHTML = '';
+  currentCmd = null;
+}
+
+$modalClose.addEventListener('click', closeModal);
+$modalOverlay.addEventListener('click', (e) => {
+  if (e.target === $modalOverlay) closeModal();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && $modalOverlay.classList.contains('open')) closeModal();
 });
 
-const sideLinks = document.querySelectorAll('.side-link');
-sideLinks.forEach(link => {
-  link.addEventListener('click', () => {
-    sideLinks.forEach(l => l.classList.remove('active'));
-    link.classList.add('active');
-  });
+// ─── Progress bar ───────────────────────────────────────────────
+function updateProgress() {
+  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
+  $progressBar.style.width = progress + '%';
+}
+
+// ─── Search ─────────────────────────────────────────────────────
+let searchTimeout;
+$search.addEventListener('input', () => {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    currentSearch = $search.value.trim();
+    render();
+  }, 150);
 });
 
-document.addEventListener('click', e => {
-  const btn = e.target.closest('.copy-btn');
-  if (!btn) return;
-  const text = btn.dataset.copy;
-  navigator.clipboard.writeText(text).then(() => {
-    btn.classList.add('copied');
-    btn.querySelector('span').textContent = 'Copied!';
-    const toast = document.getElementById('toast');
-    toast.textContent = `Copied ${text} to clipboard`;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2000);
-    setTimeout(() => {
-      btn.classList.remove('copied');
-      btn.querySelector('span').textContent = 'Copy';
-    }, 1500);
-  });
-});
+window.addEventListener('scroll', updateProgress, { passive: true });
 
-document.querySelectorAll('.video-iframe').forEach(f => {
-  f.addEventListener('load', () => {
-    const ph = f.parentElement.querySelector('.video-placeholder');
-    if (ph) ph.classList.add('hidden');
-  });
-});
-
+// ─── Init ───────────────────────────────────────────────────────
+render();
 </script>
-
 </body>
 </html>
